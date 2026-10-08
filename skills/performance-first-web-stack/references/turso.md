@@ -6,7 +6,7 @@ Use for Turso/libSQL, Rust SDK access, embedded/tenant databases, local/offline 
 
 - Record engine, Rust SDK, access mode, and hosting; SQLite-derived libSQL, Rust Turso, and Turso Cloud differ.
 - Verify compatibility, maturity, and concurrency; Rust Turso's MVCC/`BEGIN CONCURRENT` means single-writer assumptions are not universal.
-- SQLx's PostgreSQL driver does not integrate Turso. Review SDK code, SQL/types/constraints, migrations, and query checks.
+- Use the selected Turso Rust SDK; SQLx's PostgreSQL integration does not establish Turso support. The engine's experimental PostgreSQL frontend is not proof of equivalent dialect, transaction, migration, or driver behavior. Review SDK code, SQL/types/constraints, migrations, and query checks.
 - Embedded queries avoid network hops; HTTP does not. Define file durability/disk limits, writer ownership, backup/restart/failover; stateless replicas do not automatically share local files.
 - Distinguish primary-forwarded replicas from local-write sync; verify read-your-writes, lag/cadence, conflicts, bootstrap, and offline behavior.
 - Where sync uses last-push-wins, MUST NOT rely on it alone for global payment, inventory, or uniqueness invariants. Define an authoritative owner/transaction protocol for shared state.

@@ -83,6 +83,8 @@ Cloudflare Load Balancing is the recommended managed option for health-based rou
 
 SolidStart v2 is built on Solid v1 and Vite and has stable v2 releases. It supports deployment plugins such as Nitro and Cloudflare's Vite plugin. Keep it as the full-stack frontend default when SSR and routing serve the product. A client-only SPA is a different rendering choice, not an automatic performance upgrade.
 
+Use v2's `vite.config.ts` and one deployment plugin, following its order and environment mapping. V1 Vinxi/`app.config.ts` examples use a different build model. The current v2 release accepts Vite 8 or 9 and documents Node 24+ as its supported baseline; verify development, build, and production execution separately when using Bun.
+
 Prerender public routes where possible, stream expensive dynamic sections, and hydrate only what the selected rendering strategy supports. Solid's fine-grained reactivity reduces update work; it does not automatically make every SolidStart page an islands architecture. For content with isolated interactive widgets, Astro + Solid islands is the recommended alternative.
 
 ### Bun, package management, and deployment
@@ -217,7 +219,7 @@ For self-managed PostgreSQL, **[pgBackRest](https://pgbackrest.org/)** is the re
 
 Separate the older SQLite-derived **libSQL** engine, the newer Rust-based **Turso Database** engine, and the managed **Turso Cloud** service. The Rust engine supports MVCC with `BEGIN CONCURRENT`, and its [0.8 release](https://turso.tech/blog/turso-0.8.0) improves concurrent writes. Its workload-specific comparisons with SQLite do not select a winner against PostgreSQL. As checked on 2026-10-07, the [project FAQ](https://github.com/tursodatabase/turso#faq) reports production use while noting pre-1.0 status, compatibility gaps, and experimental features.
 
-Embedded queries eliminate a database network round trip and a separate database process for that access path. Remote HTTP access still crosses a network. Use a supported Rust SDK for the chosen engine/access mode and revise repository code, migrations, and query checks; SQLx's PostgreSQL integration is not a Turso driver. Cap blocking work, connection/task concurrency, and buffers according to the SDK's execution model. Embedded files need suitable storage, backup, and failover ownership; stateless replicas do not automatically share them.
+Embedded queries eliminate a database network round trip and a separate database process for that access path. Remote HTTP access still crosses a network. Use a supported Rust SDK for the chosen engine/access mode and revise repository code, migrations, and query checks. SQLx's PostgreSQL integration does not establish Turso support, and Turso's experimental PostgreSQL frontend does not establish equivalent PostgreSQL behavior. Cap blocking work, connection/task concurrency, and buffers according to the SDK's execution model. Embedded files need suitable storage, backup, and failover ownership; stateless replicas do not automatically share them.
 
 Choose consistency deliberately. Legacy [libSQL embedded replicas](https://docs.turso.tech/features/embedded-replicas/introduction) forward writes to a primary by default; [Turso Sync](https://docs.turso.tech/sync/usage) uses local writes with explicit push/pull and last-push-wins conflict handling. Define replica staleness, conflict handling, and which owner can enforce shared invariants. A local commit must not be treated as proof that all regions have accepted the same state.
 

@@ -35,6 +35,8 @@ Static content without server features needs no API, database, queue, or SSR pro
 
 Use one authoritative contract/transaction model per boundary. Additional services, wrappers, or overlapping tools need a concrete requirement.
 
+SolidStart 2 uses `vite.config.ts` and Vite's Environment API; do not copy v1 Vinxi/`app.config.ts` adapters into a v2 setup. Choose one deployment plugin and follow its documented order/environment mapping. With Nitro v3, use `solidStart(), nitro()` and the top-level `nitro` configuration, including the Bun preset. Verify the selected release's Vite peer range. Upstream documents Node 24+ as its supported baseline; Bun execution needs verification of development, build, and the production artifact rather than assuming Bun is covered by that support statement.
+
 ## Short request paths and rendering
 
 - Pre-render suitable public routes; use Astro islands for content interaction and SolidStart for interactive SSR/routing.
