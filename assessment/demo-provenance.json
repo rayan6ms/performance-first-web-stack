@@ -1,0 +1,112 @@
+[
+  {
+    "id": "04-ratecraft",
+    "original_commit": "aaba807918ff9260e9819f3b7158f78e46956821",
+    "original_guidance_revision": "ff254aae09cd3cee626c39f07767d4e8f559e108",
+    "original_tracked_sha256": {
+      ".gitignore": "112c6c469b647e9bb4452e101841c7bad0690fab6ec78015c4488a7c8a78867e",
+      ".oxfmtrc.json": "63f1d54682a342dcbfcfa478c9c5e06223f4882ce8fece880aa6fc1d51363898",
+      ".oxlintrc.json": "cfca227ca40331c9bb4952412aaddfde57e0aa1b8e43916a5edfb1cbaae80b50",
+      "AGENTS.md": "ac75bceaf85c21fa7b85f22413317802873abe62b9f93f16c3133184374b868f",
+      "README.md": "9ee5560ac3f086c55af1a2508697c7e44f090c564495d394f1ec30bf7213f707",
+      "bun.lock": "0fb6d5c2f7d58b10fcd1ea12a0a39ea4b69c0613025a195af55948823af2f13c",
+      "docs/stack-decisions.md": "1e990ba2965b88cb10897f5d51122b6cfbd59bf5d15df93934731eed507ac23d",
+      "docs/stack/AGENTS.md": "e34c55b030f8a643a41162f01b33ad142dfc2b09e75bb6a24403f3ada32e942c",
+      "docs/stack/references/advanced.md": "86982556cf65e62202107aa9c79c32f8291452c56fbafa293312cfe3e917b74c",
+      "docs/stack/references/architecture.md": "4a441c06e911b93b18e404a39079a46f9bf04fa7f33f5840e4f5cb269dfa0aaf",
+      "docs/stack/references/backend.md": "d1473a119f6222f87883bda4192551e5a8848696d361b4d74dbfe39866e85245",
+      "docs/stack/references/data-services.md": "704c8b6a277754b501a261540af864e65a67e2d47a8e5c4ea7db2dca0401f80b",
+      "docs/stack/references/frontend.md": "44cc0a910e4bda70f770b2079816b18edb9885be26e21dae520fa9099c036268",
+      "docs/stack/references/integrations.md": "8338af9cf93c840205f17a7f78dc838cb06fb842e60e105f52a6deee5681d83c",
+      "docs/stack/references/operations.md": "e19dc0ad18a804518d5f722d6a9e1eafadcc2800a07fdac54710d41a4664d6e1",
+      "docs/stack/references/performance.md": "5d01f6f340eb60be5e6c906a406ee22305e8eac64fab9f93f2610335ca7c2e62",
+      "docs/stack/references/postgresql.md": "f4aad5b8a3e36db3392c49414e065d3c36d1dbf87adc03e74e734a622473a2ab",
+      "docs/stack/references/tooling.md": "eedfb3e54a49a3c64603d668b65e276510b1942d8037b5965e35f7ecccf9fc84",
+      "docs/stack/references/turso.md": "f75dce35a560920324d831db800ef9c42f4d6962cb499462d3339b8d6ddad24f",
+      "package.json": "ce9a13166cc0a06b32057c6d25de381b103ccb389a5692783bf7102e3c29ca0e",
+      "src/app.css": "5dbc0fcb202c54b9d2e811f70cbdbcb2011d2fcf46a1c21cf3704be1aecb01ab",
+      "src/app.tsx": "32f82cf57a775f455e64bef0a8af6c1ae7d7b8e99be0c275a771084db0df3b4b",
+      "src/entry-client.tsx": "22c6e8cd0323205f50e290ac6cc712ffd1c215f895910d53fc5461f8a887b79d",
+      "src/entry-server.tsx": "6ca9de43435d4032da3901b91ce95458e6bb94cf426eb94a43063a2b14c79911",
+      "src/rate.test.ts": "7e5598cea83f869c4a6437d003f1d2d2a58168b779761447d716201a9cd23431",
+      "src/rate.ts": "98c9f99207492f76249a8e858aebe291a9bfe91335312a1674cdd93bdf0c349b",
+      "tsconfig.json": "f08196dd4f206775f7f32ecf701f924ee4d82ca8d32bda65586f115f6e3b1ce1",
+      "vite.config.ts": "a0b04f883ab7458a69856a636398aee2cf27ba5e8f273286ba6c79c7e5f04210",
+      "vitest.config.ts": "339fd140644beca19a441b0c32f84de9459531e62fc6edc54a4a2b6b1025a5d5"
+    },
+    "publication_edits": [
+      {
+        "file": "docs/stack-decisions.md",
+        "reason": "Replace trial-host paths with portable locations; historical facts retained."
+      },
+      {
+        "file": "README.md",
+        "reason": "Add publication scope, evidence links and reproduction limits."
+      },
+      {
+        "file": "LICENSE",
+        "reason": "Add the MIT notice to keep copied standalone demos licensed."
+      }
+    ]
+  },
+  {
+    "id": "05-fieldstock",
+    "original_commit": "05d39d596fc68aa7b0095ed81cdb41af91fa5ee9",
+    "original_guidance_revision": "ff254aae09cd3cee626c39f07767d4e8f559e108",
+    "original_tracked_sha256": {
+      ".env.example": "6e6df9a085755bc44ab6f04472623dfcbecfc509b6df0c7b4f19fe512ff4c176",
+      ".gitignore": "bebd0b2d72a7491dcc5aa6469ef5cd7b64eae7e7b9f257b35ae67a3a33d5b98b",
+      ".oxlintrc.json": "3427783a045c24a1902f3b0e87a39345fe436c227a2170199c26b0e7051090b2",
+      "AGENTS.md": "bdcb07272ef1fef3587db850acb6ad0307ff0d126ef72cd25dfce82733cccfe0",
+      "README.md": "2c51719f2d9677b4c4482816c0518200b0a7f72192f4bfeef7aa04ea8841274c",
+      "api/.cargo/config.toml": "7af9ec6837490d1ca073d1db582eab96aff336a76a7fff3236d3dbad3bdd3756",
+      "api/Cargo.lock": "54a9f38767e8735385b1191dc6655954127f5b61bef6232321e023e2348271c2",
+      "api/Cargo.toml": "9e6b738fe85f37e85f81157d8a91585a6331650a8443c067b2bb7264f26738c6",
+      "api/rust-toolchain.toml": "8e390d6a0838315f972690f46ef8bae8b7ecc9ee6c1ed70140ef852869c2482e",
+      "api/src/main.rs": "4d91f915d4c748d9dbd29bcf460d430e64b2cad56ae93ce90bc81254f24192c1",
+      "bun.lock": "e90ab3d5ab2be0c51d915063ef3103b69edddfad5266a31af1d2eb563ff8852a",
+      "docs/openapi.json": "4f5f186bd8f725fe6f082b1ffc53ba4c7c5317b40a9298d4a98385f275b4d56e",
+      "docs/stack-decisions.md": "a0b4d8599c42644ea2bd04be3ef9f1c76efc990f5d4d66e464a100dbb9a55140",
+      "docs/stack/AGENTS.md": "e34c55b030f8a643a41162f01b33ad142dfc2b09e75bb6a24403f3ada32e942c",
+      "docs/stack/references/advanced.md": "86982556cf65e62202107aa9c79c32f8291452c56fbafa293312cfe3e917b74c",
+      "docs/stack/references/architecture.md": "4a441c06e911b93b18e404a39079a46f9bf04fa7f33f5840e4f5cb269dfa0aaf",
+      "docs/stack/references/backend.md": "d1473a119f6222f87883bda4192551e5a8848696d361b4d74dbfe39866e85245",
+      "docs/stack/references/data-services.md": "704c8b6a277754b501a261540af864e65a67e2d47a8e5c4ea7db2dca0401f80b",
+      "docs/stack/references/frontend.md": "44cc0a910e4bda70f770b2079816b18edb9885be26e21dae520fa9099c036268",
+      "docs/stack/references/integrations.md": "8338af9cf93c840205f17a7f78dc838cb06fb842e60e105f52a6deee5681d83c",
+      "docs/stack/references/operations.md": "e19dc0ad18a804518d5f722d6a9e1eafadcc2800a07fdac54710d41a4664d6e1",
+      "docs/stack/references/performance.md": "5d01f6f340eb60be5e6c906a406ee22305e8eac64fab9f93f2610335ca7c2e62",
+      "docs/stack/references/postgresql.md": "f4aad5b8a3e36db3392c49414e065d3c36d1dbf87adc03e74e734a622473a2ab",
+      "docs/stack/references/tooling.md": "eedfb3e54a49a3c64603d668b65e276510b1942d8037b5965e35f7ecccf9fc84",
+      "docs/stack/references/turso.md": "f75dce35a560920324d831db800ef9c42f4d6962cb499462d3339b8d6ddad24f",
+      "package.json": "43cf2d4faa19f67f268d924a24abca6e04de423b994af6f2a5b848bb7ec3bba2",
+      "scripts/cargo.sh": "59d3e89f1b9a923d20115213d559355eb1bfcc6bec23242b7f758d91c6ec4d0d",
+      "scripts/check-contract.ts": "0502d0a957dda46b8e230f2de7109c8b8f1a3d2dd741f14802fdfc2c9945e85b",
+      "scripts/smoke.ts": "d2e0e9c861998477fd74a03d6ddf7e05f28179fb207d85f5141b0f7819e71755",
+      "src/app.css": "6c37e46e3f7f701b9df562e3e6865a821f995708108eb98e5e69626bbae9db8d",
+      "src/app.tsx": "27ef34b5519c00dbca193ee603de449d3dfb7ffef3c3897cba3fc416117c41ce",
+      "src/entry-client.tsx": "1d30b939786f930ea51b65142b9da2d8552b41587426be60bd39447957a8ab18",
+      "src/entry-server.tsx": "20586d8143ebc69c0d8b7109c22b3588535b4cea4ed472ab2f4503b61bd86533",
+      "src/lib/api-schema.d.ts": "ec870c766d559cebbce8ac006fd03eb9d5eb125c02c9a75630a1b9069a956e1e",
+      "src/lib/health.test.ts": "c29b698dc513ce1b72ca31d8ad4bf81105c9c78de0d9ed981677be1b5f84722a",
+      "src/lib/health.ts": "7a843b98e6e1fdbd559fd94cd3b7f9d3286da4041651c920a195a98c17d6cd82",
+      "src/routes/index.tsx": "831ac6c666bf547dd4acacbd0e0d74bb516f8fb5d493d90d4b7d57ae24961dae",
+      "tsconfig.json": "85b71e6b82fdbccf39c23017afbe19e6d087659f34240ef2296fbf503fe04b39",
+      "vite.config.ts": "5d18d23dc8523246dfc08af78feb6c5107b59f8437903ac0eb0a414eac067774"
+    },
+    "publication_edits": [
+      {
+        "file": "docs/stack-decisions.md",
+        "reason": "Replace trial-host paths with portable locations; historical facts retained."
+      },
+      {
+        "file": "README.md",
+        "reason": "Add publication scope, evidence links and reproduction limits."
+      },
+      {
+        "file": "LICENSE",
+        "reason": "Add the MIT notice to keep copied standalone demos licensed."
+      }
+    ]
+  }
+]

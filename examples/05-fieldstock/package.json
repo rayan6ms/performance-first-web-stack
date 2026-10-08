@@ -1,0 +1,41 @@
+{
+  "name": "fieldstock-foundation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun --bun vite --host 127.0.0.1 --port 45105 --strictPort",
+    "build": "RAYON_NUM_THREADS=2 bun --bun vite build",
+    "start": "bun .output/server/index.mjs",
+    "typecheck": "bun --bun tsc --noEmit",
+    "lint": "bun --bun oxlint --threads 2 src scripts vite.config.ts",
+    "format": "bun --bun oxfmt --threads 2 src scripts vite.config.ts tsconfig.json package.json .oxlintrc.json",
+    "format:check": "bun run format --check",
+    "test": "bun test src/lib/health.test.ts",
+    "api:dev": "sh scripts/cargo.sh run --locked",
+    "api:check": "sh scripts/cargo.sh check --locked",
+    "api:test": "sh scripts/cargo.sh test --locked",
+    "api:lint": "sh scripts/cargo.sh clippy --locked --all-targets -- -D warnings",
+    "api:format:check": "sh scripts/cargo.sh fmt --all -- --check",
+    "api:build": "sh scripts/cargo.sh build --release --locked",
+    "contract:generate": "sh scripts/cargo.sh run --locked -- --export-openapi > docs/openapi.json && bun --bun openapi-typescript docs/openapi.json -o src/lib/api-schema.d.ts && bun run format",
+    "contract:check": "bun scripts/check-contract.ts",
+    "smoke": "bun scripts/smoke.ts"
+  },
+  "dependencies": {
+    "@solidjs/router": "1.0.0",
+    "@solidjs/start": "2.0.6",
+    "openapi-fetch": "0.17.0",
+    "solid-js": "1.9.17",
+    "valibot": "1.5.0"
+  },
+  "devDependencies": {
+    "@types/bun": "1.4.2",
+    "nitro": "3.0.260903-beta",
+    "openapi-typescript": "7.13.0",
+    "oxfmt": "0.72.0",
+    "oxlint": "1.87.0",
+    "typescript": "5.9.3",
+    "vite": "8.3.4"
+  },
+  "packageManager": "bun@1.4.0"
+}

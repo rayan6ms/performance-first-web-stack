@@ -1,0 +1,53 @@
+{
+  "evaluated_date": "2026-10-08",
+  "model": "gpt-6.1-sol",
+  "reasoning_effort_requested": "high",
+  "category_order": [
+    "Selection and scope",
+    "Installation and reproducibility",
+    "Runtime and behavior",
+    "Continuity and deferred choices",
+    "Reliability and delivery"
+  ],
+  "scoring_scope": "Authorized minimal foundations on the available local host. A score of 10 means complete against this narrow rubric; it does not establish production readiness, optimal technology choices, or absence of undiscovered defects.",
+  "evaluator_repairs_to_projects": 0,
+  "source_guidance_changes": 0,
+  "source_revision": "ff254aae09cd3cee626c39f07767d4e8f559e108",
+  "cases": [
+    {
+      "id": "04-ratecraft",
+      "name": "RateCraft",
+      "score": 10,
+      "categories": [
+        4,
+        4,
+        4,
+        4,
+        4
+      ],
+      "readiness": "Ready for local calculator work",
+      "finding": "Real local arithmetic and input recovery verified; 8,693 bytes gzip with Bun node:zlib defaults."
+    },
+    {
+      "id": "05-fieldstock",
+      "name": "FieldStock",
+      "score": 9.5,
+      "categories": [
+        4,
+        4,
+        3,
+        4,
+        4
+      ],
+      "readiness": "Ready for local web/Rust foundation work with a minor focus issue",
+      "finding": "Actual health/failure/restart contract works; disabling retry during a probe drops keyboard focus to BODY."
+    }
+  ],
+  "scenario_count": 2,
+  "dispatch_count": 2,
+  "interruptions": 0,
+  "independent_command_checks": {
+    "count": 18,
+    "passed": 18
+  }
+}

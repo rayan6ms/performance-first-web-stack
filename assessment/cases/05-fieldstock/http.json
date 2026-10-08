@@ -1,0 +1,34 @@
+{
+  "responses": [
+    {
+      "origin": "http://127.0.0.1:45105",
+      "http_status": 200,
+      "allow_origin": "http://127.0.0.1:45105",
+      "cache_control": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "origin": "https://unapproved.invalid",
+      "http_status": 200,
+      "allow_origin": "http://127.0.0.1:45105",
+      "cache_control": "no-store",
+      "body": {
+        "status": "ok"
+      }
+    },
+    {
+      "method": "POST",
+      "http_status": 405
+    }
+  ],
+  "checks": {
+    "allowed_browser_origin": true,
+    "unapproved_browser_origin_rejected": true,
+    "get_only": true,
+    "correct_health": true,
+    "no_store": true
+  },
+  "evaluator_correction": "An initial assertion incorrectly required no ACAO header for an unapproved origin. Fixed-origin ACAO is valid: the browser rejects an origin/header mismatch. No application change."
+}

@@ -1,0 +1,5 @@
+{
+  "categories": { "correctness": "error" },
+  "plugins": ["typescript", "import", "oxc"],
+  "ignorePatterns": ["src/lib/api-schema.d.ts"]
+}

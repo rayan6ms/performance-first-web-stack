@@ -1,0 +1,188 @@
+{
+  "date": "2026-10-08",
+  "scope": "Portable release demo copies on Linux with Bun 1.4.0; separate from the frozen trial scores.",
+  "commands": [
+    {
+      "demo": "04-ratecraft",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile",
+        "--network-concurrency",
+        "2",
+        "--concurrent-scripts",
+        "2"
+      ],
+      "exit": 0,
+      "seconds": 0.42
+    },
+    {
+      "demo": "04-ratecraft",
+      "command": [
+        "bun",
+        "run",
+        "build"
+      ],
+      "exit": 0,
+      "seconds": 4.62
+    },
+    {
+      "demo": "04-ratecraft",
+      "command": [
+        "bun",
+        "run",
+        "check"
+      ],
+      "exit": 0,
+      "seconds": 0.82
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "install",
+        "--frozen-lockfile",
+        "--network-concurrency",
+        "2",
+        "--concurrent-scripts",
+        "2"
+      ],
+      "exit": 0,
+      "seconds": 0.52
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "build"
+      ],
+      "exit": 0,
+      "seconds": 4.53
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "typecheck"
+      ],
+      "exit": 0,
+      "seconds": 3.37
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "lint"
+      ],
+      "exit": 0,
+      "seconds": 0.16
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "format:check"
+      ],
+      "exit": 0,
+      "seconds": 0.06
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "test"
+      ],
+      "exit": 0,
+      "seconds": 0.03
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "api:check"
+      ],
+      "exit": 0,
+      "seconds": 18.2
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "api:format:check"
+      ],
+      "exit": 0,
+      "seconds": 0.06
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "api:lint"
+      ],
+      "exit": 0,
+      "seconds": 0.36
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "api:test"
+      ],
+      "exit": 0,
+      "seconds": 18.0
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "api:build"
+      ],
+      "exit": 0,
+      "seconds": 45.41
+    },
+    {
+      "demo": "05-fieldstock",
+      "command": [
+        "bun",
+        "run",
+        "contract:check"
+      ],
+      "exit": 0,
+      "seconds": 3.27
+    }
+  ],
+  "runtime": [
+    {
+      "demo": "04-ratecraft",
+      "check": "actual Bun production entrypoint homepage and built assets",
+      "status": "passed"
+    },
+    {
+      "demo": "05-fieldstock",
+      "check": "actual Bun production entrypoint homepage and built assets",
+      "status": "passed"
+    },
+    {
+      "demo": "05-fieldstock",
+      "check": "actual Rust release health endpoint",
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "No new model or live-interview trial.",
+    "No new browser interaction, database lifecycle, hosted provider, deployment, load or field-performance check.",
+    "Rust checks used the already installed matching toolchain via the demo's scoped override; no shared toolchain was changed.",
+    "GitHub Actions and plugin UI have not run; their configuration/schema were validated locally."
+  ],
+  "cleanup": "All publication smoke servers stopped."
+}

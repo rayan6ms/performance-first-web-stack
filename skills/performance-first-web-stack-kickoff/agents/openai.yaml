@@ -1,0 +1,4 @@
+interface:
+  display_name: "Performance-First Kickoff"
+  short_description: "Prepare and verify a minimal website stack foundation"
+  default_prompt: "Use $performance-first-web-stack-kickoff to gather my website requirements, preserve my selected stack's defaults, and prepare and verify a minimal foundation with persistent project guidance."

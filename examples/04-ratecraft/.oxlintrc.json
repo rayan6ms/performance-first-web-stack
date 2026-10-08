@@ -1,0 +1,11 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "oxc", "jsx-a11y", "vitest"],
+  "categories": { "correctness": "error" },
+  "env": { "browser": true, "node": true },
+  "rules": {
+    "eslint/no-unused-vars": "error",
+    "typescript/no-explicit-any": "error",
+    "jsx-a11y/label-has-associated-control": "error"
+  }
+}

@@ -1,0 +1,136 @@
+:root {
+  font-family: system-ui, sans-serif;
+  color: #172820;
+  background: #f4f6f2;
+  color-scheme: light;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+}
+main {
+  max-width: 960px;
+  margin: auto;
+  padding: 32px;
+}
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid #c5cdc3;
+}
+.brand {
+  font-size: 24px;
+  font-weight: 750;
+  letter-spacing: -1px;
+}
+.stage {
+  color: #435447;
+  font-size: 14px;
+}
+section {
+  padding: 64px 0;
+  max-width: 680px;
+}
+.eyebrow {
+  font-size: 12px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: #425b43;
+}
+h1 {
+  font-size: clamp(32px, 5vw, 52px);
+  letter-spacing: -1.8px;
+  line-height: 1.12;
+  margin: 16px 0;
+}
+.intro {
+  font-size: 18px;
+  line-height: 1.6;
+  color: #435447;
+  max-width: 600px;
+}
+.health-panel {
+  background: #fff;
+  border: 1px solid #c5cdc3;
+  border-radius: 12px;
+  padding: 28px;
+  margin-top: 36px;
+}
+h2 {
+  font-size: 18px;
+  margin: 0 0 24px;
+}
+.status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 650;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #627069;
+}
+[data-state="healthy"] .dot {
+  background: #21623c;
+}
+[data-state="unavailable"] .dot {
+  background: #9d3d20;
+}
+.health-panel p {
+  color: #435447;
+  line-height: 1.6;
+}
+button {
+  background: #234d32;
+  color: white;
+  border: 0;
+  border-radius: 6px;
+  padding: 12px 18px;
+  min-height: 44px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+button:hover {
+  background: #163921;
+}
+button:focus-visible {
+  outline: 3px solid #9d3d20;
+  outline-offset: 4px;
+}
+button:disabled {
+  background: #536158;
+  cursor: wait;
+}
+footer {
+  color: #435447;
+  font-size: 13px;
+  border-top: 1px solid #c5cdc3;
+  padding-top: 24px;
+}
+@media (max-width: 480px) {
+  main {
+    padding: 20px;
+  }
+  header {
+    align-items: flex-start;
+  }
+  .stage {
+    max-width: 100px;
+    text-align: right;
+  }
+  section {
+    padding: 40px 0;
+  }
+  .health-panel {
+    padding: 20px;
+  }
+}

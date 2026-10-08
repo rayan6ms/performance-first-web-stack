@@ -1,0 +1,91 @@
+{
+  "blank": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "errors": [
+        "Enter a value greater than zero.",
+        "Enter a value greater than zero."
+      ],
+      "focused": "income",
+      "hoursInvalid": "true",
+      "incomeInvalid": "true",
+      "result": "YOUR HOURLY ESTIMATE\n\nA starting point,\nmade for you.\n\nEnter your income goal and billable hours to see your rate.\n\nA simple estimate. Allow for taxes, expenses, and time off when setting your final rate.",
+      "scrollWidth": 1265,
+      "width": 1280
+    }
+  },
+  "keyboardCalculation": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "hours": "120",
+      "income": "6000",
+      "network": [
+        "http://127.0.0.1:43104/_build/assets/entry-client-BHFxf5VR.css",
+        "http://127.0.0.1:43104/_build/assets/entry-client-BoW2UjNe.js"
+      ],
+      "output": "YOUR HOURLY ESTIMATE\n\n$50.00\n\nper billable hour\n\nMonthly income ÷ monthly billable hours. Updates as you adjust your numbers.\n\nA simple estimate. Allow for taxes, expenses, and time off when setting your final rate."
+    }
+  },
+  "zero": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "error": "Enter a value greater than zero.",
+      "hasRate": false,
+      "hours": "0",
+      "income": "6000",
+      "invalid": "true"
+    }
+  },
+  "recovery": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "hoursError": "",
+      "income": "6000",
+      "output": "$50.00"
+    }
+  },
+  "negative": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "error": "Enter a value greater than zero.",
+      "hasRate": false,
+      "invalid": "true"
+    }
+  },
+  "mobile": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:43104/"
+    },
+    "value": {
+      "height": 740,
+      "inputWidths": [
+        223,
+        223
+      ],
+      "result": "$50.00",
+      "scrollWidth": 305,
+      "width": 320
+    }
+  },
+  "screenshot": {
+    "url": "http://127.0.0.1:43104/",
+    "screenshotPath": "<trial-home>/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-muztgj90-29e072b5.png"
+  },
+  "diagnosticsNote": "The reused preview retains earlier pages' console diagnostics. Errors at 17:31:57 are from the evaluator stopping LiveBoard's previous dev server; RateCraft resource entries are scoped by the 43104 origin."
+}

@@ -1,0 +1,146 @@
+[
+  {
+    "case": "04-ratecraft",
+    "check": "build",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "04-ratecraft",
+    "check": "check",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "04-ratecraft",
+    "check": "frozen-install",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "api-build",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "api-check",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "api-format-check",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "api-lint",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "api-test",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "build",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "contract-check",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "format-check",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "frozen-install",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "lint",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "smoke-healthy",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "smoke-recovered",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "smoke-unavailable",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "test",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  },
+  {
+    "case": "05-fieldstock",
+    "check": "typecheck",
+    "exit": 0,
+    "status": "passed",
+    "expected": 0,
+    "passed": true
+  }
+]

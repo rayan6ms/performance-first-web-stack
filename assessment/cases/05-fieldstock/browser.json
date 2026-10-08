@@ -1,0 +1,97 @@
+{
+  "desktop": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "healthText": "Rust service healthy",
+      "height": 800,
+      "requests": [
+        "http://127.0.0.1:45105/_build/assets/entry-client-BE40KhV3.css",
+        "http://127.0.0.1:45105/_build/assets/web-DAhwK-9B.js",
+        "http://127.0.0.1:45105/_build/assets/entry-client-r8kS--hp.js",
+        "http://127.0.0.1:45105/_build/assets/index-Bgoa02Oh.js",
+        "http://127.0.0.1:45106/health"
+      ],
+      "scrollWidth": 1280,
+      "width": 1280
+    }
+  },
+  "keyboardInitial": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "focused": "Check again",
+      "healthRequests": 1,
+      "outline": "3px",
+      "status": "Rust service healthy"
+    }
+  },
+  "unavailable": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "retryEnabled": true,
+      "shellPresent": true,
+      "status": "Rust service unavailable",
+      "text": "FieldStock\nInitial foundation\n\nWAREHOUSE OPERATIONS\n\nA clear starting point.\n\nThe workspace is taking shape. Inventory workflows will follow once data ownership and access are settled.\n\nService connection\nRust service unavailable\n\nThe service could not be reached or returned an invalid response. Start the local API, then try again.\n\nCheck again\nFoundation only · No inventory records or stock actions"
+    }
+  },
+  "recovery": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "focused": "FieldStockInitial foundationWAREHOUSE OPERATIONSA clear starting point.The workspace is taking shape. Inventory workflows will follow once data ownership and access are settled.Service connectionRust service healthyThe service answered the health check. Stock data and authorized actions are not available yet.Check again<p>Enable JavaScript to check the service connection.</p>Foundation only · No inventory records or stock actions",
+      "requests": [
+        "http://127.0.0.1:45106/health",
+        "http://127.0.0.1:45106/health",
+        "http://127.0.0.1:45106/health"
+      ],
+      "status": "Rust service healthy"
+    }
+  },
+  "keyboardBefore": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "focused": "BUTTON",
+      "requests": 3,
+      "scrollWidth": 375,
+      "width": 375
+    }
+  },
+  "keyboardAfter": {
+    "toolIcon": {
+      "_tag": "website",
+      "pageUrl": "http://127.0.0.1:45105/"
+    },
+    "value": {
+      "focusedTag": "BODY",
+      "focusedText": "FieldStockInitial foundationWAREHOUSE OPERATIONSA ",
+      "height": 812,
+      "requests": 4,
+      "scrollWidth": 375,
+      "status": "Rust service healthy",
+      "width": 375
+    }
+  },
+  "mobileScreenshot": {
+    "url": "http://127.0.0.1:45105/",
+    "screenshotPath": "<trial-home>/.t3/userdata/browser-artifacts/browser-screenshot-127-0-0-1-muztmah5-dd293ce6.png"
+  },
+  "toolLimitation": [
+    {
+      "type": "text",
+      "text": "No preview automation host is available for evaluate in environment b9b38b1d-ab1f-4901-9cb0-8b4a817d3597. Preview tools run in a T3 Code desktop app that is open and connected to this environment; a headless server has no browser of its own. Do not retry. To check a page, use a headless browser from the shell, such as Playwright, or curl, or ask the user to open this thread in the T3 Code desktop app."
+    }
+  ]
+}

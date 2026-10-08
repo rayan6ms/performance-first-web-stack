@@ -1,0 +1,12 @@
+node_modules/
+.output/
+.solid/
+.vite/
+dist/
+coverage/
+.kickoff-tmp/
+.env
+.env.*
+!.env.example
+*.log
+*.tsbuildinfo
