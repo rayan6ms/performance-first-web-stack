@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "performance-first-web-stack",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Solid and Rust web stack guidance and project setup for coding agents",
   "license": "MIT",
   "extensions": {
