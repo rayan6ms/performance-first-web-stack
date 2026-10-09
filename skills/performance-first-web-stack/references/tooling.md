@@ -13,6 +13,8 @@ Select specialist build/infrastructure components using their [admission criteri
 - Use Cargo for Rust and a separate frontend TypeScript check; transpilation/Oxlint do not replace it. Do not suppress errors to pass checks.
 - Prefer rootless Podman, Docker when unsuitable, and `uv` for Python. Bound build resources to the host.
 
+When type checking fails in third-party declarations, first inspect compatible dependency versions and separate those diagnostics from authored errors. If needed, document `skipLibCheck` in the smallest affected configuration; it skips declaration-file checking, not checking of authored code against imported APIs. Retain strict application, configuration, and test checks and verify their coverage. Record the vendor-check limitation rather than masking authored errors or installing unused optional integrations.
+
 For new foundations, expose one documented `verify` command covering applicable non-mutating frontend types, Rust checks, lint/format, meaningful local tests, and contract checks; retain a suitable existing equivalent. Keep individual checks available and propagate failures. Builds, code generation that updates source, live-service checks, migrations, and deployment remain explicit commands. Do not add no-op checks or test infrastructure just to fill the umbrella.
 
 ## Native Bun capabilities
@@ -28,3 +30,4 @@ Use Just/direnv, SOPS with age, GitHub Actions, Renovate, Release Please, Trivy,
 Use documentation matching the installed version.
 
 - [Bun runtime and APIs](https://bun.com/docs/runtime)
+- [TypeScript skipLibCheck](https://www.typescriptlang.org/tsconfig/skipLibCheck.html)
