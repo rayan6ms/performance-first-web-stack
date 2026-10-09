@@ -1,6 +1,6 @@
 # Kickoff trial assessment
 
-This product includes 2 scenarios from the original five-scenario assessment on 2026-10-08. Their local foundations passed applicable install, type/lint/format, production build/startup, and relevant browser/service checks. These published copies preserve the original application code and policy, with host paths and publication notes adapted as listed in [demo provenance](demo-provenance.json).
+This product includes 2 scenarios from the original five-scenario assessment on 2026-10-08. Their local foundations passed applicable install, type/lint/format, production build/startup, and relevant browser/service checks. Published copies retain the trial policy; portability edits and subsequent demo corrections are listed in [demo provenance](demo-provenance.json). Original trial hashes and scores are preserved.
 
 | Demo | Local-foundation score | Finding |
 | --- | --- | --- |
@@ -19,7 +19,13 @@ The scored outputs used frozen local guidance and retained selected defaults, co
 
 The installs passed on an existing Linux/Bun 1.4.0 host and cache. This was not a clean-machine or cross-platform certification. Interactive foundations use a documented pinned Nitro prerelease; passing local checks does not establish production support. No deployment, traffic capacity, field Core Web Vitals, auth/payment behavior, or complete application is claimed.
 
-RateCraft verified arithmetic, validation/recovery, keyboard submission and a small compressed client artifact; hosting/persistence/export remain pending. FieldStock verified real Rust health/failure/restart and contract drift but has a retry-focus defect: disabling its button while probing moves focus to BODY. Data ownership, authentication and inventory writes remain pending. The defect is retained to keep historical findings honest.
+RateCraft verified arithmetic, validation/recovery, keyboard submission and a small compressed client artifact; hosting/persistence/export remain pending. FieldStock verified real Rust health/failure/restart and contract drift, but the original trial had a retry-focus defect: disabling its button while probing moved focus to BODY. Data ownership, authentication and inventory writes remain pending. The original finding and score are retained; the published copy's correction is recorded below.
+
+## Demo corrections
+
+A code review on 2026-10-09 reproduced contract-file truncation when Rust compilation failed. Generation now stages OpenAPI and formatted TypeScript before replacing either saved artifact. Regression fixtures cover export, JSON parsing, type generation and formatter failures; the real Rust export/generation/drift check also passed. Individual file replacements are atomic, but the pair is not a filesystem transaction.
+
+The same review reproduced the recorded retry-focus defect in a browser. The button now exposes `aria-disabled` and ignores activation during a pending request, preserving focus without duplicate calls. Headless Chromium verified keyboard activation, healthy response, a controlled browser-network failure, recovery against the real Rust API, and a narrow viewport. Native T3 preview automation was unavailable. These changes are listed in provenance and do not revise the original score or browser records.
 
 ## Improvements informed by this assessment
 

@@ -60,9 +60,10 @@ export default function Home() {
           <button
             type="button"
             onClick={() => {
+              if (state() === "checking") return;
               void checkHealth();
             }}
-            disabled={state() === "checking"}
+            aria-disabled={state() === "checking"}
           >
             Check again
           </button>

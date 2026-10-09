@@ -17,7 +17,7 @@
     "api:lint": "sh scripts/cargo.sh clippy --locked --all-targets -- -D warnings",
     "api:format:check": "sh scripts/cargo.sh fmt --all -- --check",
     "api:build": "sh scripts/cargo.sh build --release --locked",
-    "contract:generate": "sh scripts/cargo.sh run --locked -- --export-openapi > docs/openapi.json && bun --bun openapi-typescript docs/openapi.json -o src/lib/api-schema.d.ts && bun run format",
+    "contract:generate": "bun scripts/generate-contract.ts",
     "contract:check": "bun scripts/check-contract.ts",
     "smoke": "bun scripts/smoke.ts"
   },

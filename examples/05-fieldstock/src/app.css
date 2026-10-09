@@ -106,7 +106,7 @@ button:focus-visible {
   outline: 3px solid #9d3d20;
   outline-offset: 4px;
 }
-button:disabled {
+button[aria-disabled="true"] {
   background: #536158;
   cursor: wait;
 }

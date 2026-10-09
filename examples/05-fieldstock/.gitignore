@@ -4,6 +4,7 @@ node_modules/
 .nitro/
 .vite/
 api/target/
+.local/
 .env
 .env.*
 !.env.example

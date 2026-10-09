@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.4 — 2026-10-09
+
+- Corrected skill removal and validation of demo additions and CI commands.
+- Protected generated contracts on tool failures and fixed FieldStock retry focus.
+
 ## 0.1.3 — 2026-10-09
 
 - Fixed package validation to reject private `.local` files at any directory depth.

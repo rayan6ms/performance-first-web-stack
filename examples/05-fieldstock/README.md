@@ -8,10 +8,10 @@ Quick start (Bun 1.4.0 and Rust 1.97.1): `bun install --frozen-lockfile`, then r
 
 ## Published demo scope
 
-This is a portable copy of frozen trial `05d39d5`, assessed using source guidance `ff254aa`. It retains that historical policy and dependency versions; current guidance is distributed separately. See [assessment](../../assessment/REPORT.md), [prepared requirements](../../assessment/cases/05-fieldstock/brief.md), and [answers](../../assessment/cases/05-fieldstock/answers.md).
+This began as a portable copy of trial `05d39d5`, assessed using source guidance `ff254aa`. It retains that historical policy and dependency versions; current guidance is distributed separately. Later [demo corrections](../../assessment/REPORT.md#demo-corrections) protect contract generation and preserve retry focus. Original trial records and scores remain unchanged. See [prepared requirements](../../assessment/cases/05-fieldstock/brief.md) and [answers](../../assessment/cases/05-fieldstock/answers.md).
 
 No secrets, dependency caches, build output, database volumes, or Git history are included. Historical results apply to the original host/state. Run the documented checks again on your environment. The interactive adapter is a pinned prerelease; review support before production use.
 
-Known historical defect: the retry control loses focus during its asynchronous disabled state. Its request/recovery works; this demo intentionally preserves the assessed implementation. Normally `cargo` from PATH suffices; the optional `FIELDSTOCK_RUST_BIN` override is only for a broken host proxy and must point to your installed toolchain.
+The original trial's retry-focus defect is corrected in this copy. Normally `cargo` from PATH suffices; the optional `FIELDSTOCK_RUST_BIN` override is only for a broken host proxy and must point to your installed toolchain.
 
 Demo code is MIT licensed; see [LICENSE](LICENSE). Dependencies and credited media retain their own terms.

@@ -106,6 +106,26 @@
       {
         "file": "LICENSE",
         "reason": "Add the MIT notice to keep copied standalone demos licensed."
+      },
+      {
+        "file": "scripts/generate-contract.ts",
+        "reason": "Post-publication bug fix: stage contract artifacts until all generator steps succeed."
+      },
+      {
+        "file": "package.json",
+        "reason": "Post-publication bug fix: use staged contract generation instead of truncating saved artifacts before success."
+      },
+      {
+        "file": ".gitignore",
+        "reason": "Exclude staging files used by the corrected contract generator."
+      },
+      {
+        "file": "src/routes/index.tsx",
+        "reason": "Post-publication bug fix: retain keyboard focus and block duplicate activation while the health request is pending."
+      },
+      {
+        "file": "src/app.css",
+        "reason": "Post-publication bug fix: retain keyboard focus and block duplicate activation while the health request is pending."
       }
     ]
   }
