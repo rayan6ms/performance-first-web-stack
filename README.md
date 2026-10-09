@@ -24,7 +24,7 @@ Use Astro for content sites. Add caches, queues, and distributed services when t
 With Bun and Git installed, run from your project workspace:
 
 ```sh
-bun x --bun skills@1.7.1 add https://github.com/rayan6ms/performance-first-web-stack/tree/v0.1.2 --skill performance-first-web-stack performance-first-web-stack-kickoff --agent codex --copy
+bun x --bun skills@1.7.1 add https://github.com/rayan6ms/performance-first-web-stack/tree/v0.1.3 --skill performance-first-web-stack performance-first-web-stack-kickoff --agent codex --copy
 ```
 
 Then ask your agent:
