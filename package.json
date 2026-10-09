@@ -1,6 +1,6 @@
 {
   "name": "@rayan6ms/performance-first-web-stack",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Solid and Rust web stack guidance and project setup for coding agents",
   "type": "module",
   "license": "MIT",
