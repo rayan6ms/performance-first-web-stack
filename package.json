@@ -1,0 +1,23 @@
+{
+  "name": "@rayan6ms/performance-first-web-stack",
+  "version": "0.1.9",
+  "description": "Solid and Rust web stack guidance and project setup for coding agents",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "performance-stack": "cli/index.mjs"
+  },
+  "files": [
+    "cli",
+    "skills",
+    "LICENSE",
+    "SOURCE.json"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rayan6ms/performance-first-web-stack.git"
+  }
+}
