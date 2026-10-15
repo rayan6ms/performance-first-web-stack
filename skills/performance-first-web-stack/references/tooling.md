@@ -4,6 +4,8 @@ Use for dependency/build/CI configuration, Rust features/MSRV, frontend toolchai
 
 Select specialist build/infrastructure components using their [admission criteria](advanced.md); their presence in the catalog does not require adoption.
 
+For Knip, Astro diagnostics, and applicable audit tooling, follow [website quality checks](quality.md).
+
 ## Toolchain and version discipline
 
 - Verify changed/selected APIs and compatibility using installed code/types or matching official docs, including adapters, StyleX compiler, Bun, Rust MSRV/features, and database/extensions. Disclose gaps rather than inventing support.

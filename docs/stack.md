@@ -331,6 +331,17 @@ For the Turso profile, run integration tests against the selected engine and acc
 
 For a public web app, a useful initial budget is under 100 KiB compressed JavaScript on the critical route, LCP under 2 seconds at the chosen test profile, INP under 200 ms, and CLS under 0.1. These are engineering budgets, not universal guarantees. The current Core Web Vitals “good” thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms, and CLS ≤ 0.1 at the 75th percentile of field data. Publish the device, connection, region, and cache state beside any stricter claim.
 
+### Website quality checks
+
+- **[Knip](https://knip.dev/):** the default for unused dependencies, exports, and files in the JavaScript/TypeScript workspaces. Configure framework entry points and review findings before removing code; Rust retains its Cargo checks.
+- **Astro projects:** keep official [`astro check`](https://docs.astro.build/en/guides/typescript/); add community [Astro Doctor](https://doctor.santi020k.com/) diagnostics after checking compatibility and rule fit.
+- **[`@axe-core/playwright`](https://playwright.dev/docs/accessibility-testing):** include automated accessibility scans in representative browser journeys, alongside manual keyboard and screen-reader checks.
+- **[Lighthouse CI](https://web.dev/articles/lighthouse-ci):** the default automated lab check for route budgets against production builds. Use [WebPageTest](https://www.webpagetest.org/) around launch and material delivery changes for deeper waterfall and visual comparisons under repeatable conditions.
+- **[`web-vitals`](https://web.dev/articles/vitals-measurement-getting-started) or existing real-user monitoring:** collect deployed-site LCP, INP, and CLS; report field percentiles separately from lab results.
+- **[Sitebulb](https://sitebulb.com/):** a commercial desktop/cloud crawler for technical SEO on public indexable sites, especially content sites and stores. Arrange a crawl when site-wide auditing is useful.
+
+Install applicable code-checking tools as pinned development dependencies. Keep production-build audits in explicit commands or separate CI jobs. Review findings and measured regressions rather than chasing perfect aggregate scores. Browser measurements complement the backend performance method above.
+
 ### Advanced performance and scale
 
 These are supported options in the architecture, not a second mandatory baseline.

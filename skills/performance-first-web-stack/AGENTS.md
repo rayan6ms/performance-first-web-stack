@@ -39,6 +39,7 @@ New architecture starts with architecture/tooling and selected capabilities. Loc
 | --- | --- |
 | New architecture; rendering, runtime, BFF identity, or request paths | [Architecture](references/architecture.md) |
 | Dependencies, builds/CI, Rust features, frontend tools, or native Bun APIs | [Tooling](references/tooling.md) |
+| Code/dependency diagnostics; accessibility, browser performance, or SEO audits | [Website quality checks](references/quality.md) |
 | Rust APIs/domain/concurrency; contracts or Bun Effect coordination | [Backend](references/backend.md) |
 | PostgreSQL/SQLx queries, pools, migrations, or recovery | [PostgreSQL/SQLx](references/postgresql.md) |
 | Turso/Rust SDKs, embedded/tenant data, or offline/sync behavior | [Turso](references/turso.md) |

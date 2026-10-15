@@ -2,6 +2,8 @@
 
 Use for material performance claims, benchmark design, capacity evaluation, or architecture replacements. Apply the [core policy](../AGENTS.md) and the sections relevant to the affected boundary.
 
+For Lighthouse CI, WebPageTest, and field Core Web Vitals collection, use [website quality checks](quality.md).
+
 ## Performance measurement requirements
 
 For a material performance claim or architecture replacement, record the relevant workload, baseline, method, and outcome. A visual-only fix needs visual checks; a browser bundle claim needs browser/bundle measures, not an unrelated backend benchmark. For service/capacity claims, use the applicable measures below:

@@ -17,14 +17,14 @@ A good fit for latency-sensitive APIs, high-traffic websites, and applications w
 | Tooling | Bun, Vite, Oxlint, Oxfmt |
 | Hosting | Regional VMs or managed containers near the database, with CDN delivery |
 
-Use Astro for content sites. Add caches, queues, and distributed services when the workload needs them. The [stack guide](docs/stack.md) covers data ownership, images, authentication, deployment, and performance measurement.
+Use Astro for content sites. Add caches, queues, and distributed services when the workload needs them. The [stack guide](docs/stack.md) covers data ownership, images, authentication, deployment, quality checks, and performance measurement.
 
 ## Use with your agent
 
 With [Bun](https://bun.com/docs/installation) and [Git](https://git-scm.com/downloads), run:
 
 ```sh
-bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.10
+bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.11
 ```
 
 <details>
@@ -33,19 +33,19 @@ bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.10
 With curl and either Bun or Node.js 22+ (Linux/macOS):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/rayan6ms/performance-first-web-stack/v0.1.10/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/rayan6ms/performance-first-web-stack/v0.1.11/install.sh | sh
 ```
 
 With Node.js 22+ and Git:
 
 ```sh
-npx --yes github:rayan6ms/performance-first-web-stack#v0.1.10
+npx --yes github:rayan6ms/performance-first-web-stack#v0.1.11
 ```
 
 With pnpm, Node.js 22+ and Git:
 
 ```sh
-pnpm dlx github:rayan6ms/performance-first-web-stack#v0.1.10
+pnpm dlx github:rayan6ms/performance-first-web-stack#v0.1.11
 ```
 
 </details>
@@ -61,7 +61,7 @@ It will be [describe your website and its main features].
 
 The agent asks about your website and prepares a starting project. For project-local skills, run `performance-stack init --local`. Use `performance-first-web-stack` for ongoing development.
 
-[Installation options](docs/installation.md) · [Example projects](examples/README.md)
+[Installation and updates](docs/installation.md) · [Example projects](examples/README.md)
 
 ## License
 

@@ -13,6 +13,8 @@ Use [architecture](architecture.md) for runtime/request-path changes, the select
 
 ## Verification and delivery gates
 
+Apply [website quality checks](quality.md) for relevant code diagnostics, accessibility, lab/field browser measurements, and public-site crawls.
+
 Use existing checks on affected packages and supported feature configurations; `--all-targets` does not cover every feature combination. New applications need discoverable Rust/frontend type, lint/format, build, and meaningful behavior checks for their selected components. Run the documented verification umbrella where present and inspect its actual coverage; complete affected explicit build/integration checks separately. Distinguish existing failures from regressions.
 
 Test changed domain invariants, validation/authorization, error contracts, and critical journeys. Use real integration boundaries for affected databases/providers; test migration/recovery, delivery/replay, cancellation, and overload behavior when those paths change. Keep SQLx metadata and generated clients consistent with schema/contracts; macro checks do not cover dynamic SQL.

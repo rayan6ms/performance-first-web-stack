@@ -4,6 +4,8 @@ Use for Solid UI/state/forms, rendering/accessibility, browser budgets, or image
 
 For a material performance claim, use the [measurement policy](performance.md); upload ownership uses [data services](data-services.md).
 
+For automated accessibility, browser performance, and public-site SEO audits, use [website quality checks](quality.md).
+
 ## Frontend quality and browser budgets
 
 - Deliver a coherent responsive interface suited to the product/brand, with working controls, relevant loading/empty/error/success/denied states, and recoverable input.
