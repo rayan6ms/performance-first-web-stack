@@ -63,7 +63,7 @@ Cloudflare Load Balancing is the recommended managed option for health-based rou
 
 | Layer | Default | Why | Add or replace when |
 | --- | --- | --- | --- |
-| Interactive UI | SolidJS + SolidStart 2 | Fine-grained updates, SSR, streaming, and route-level loading | Astro for content/islands; Solid + Vite when the application deliberately needs only client rendering |
+| Interactive UI | SolidJS + SolidStart 2 | Fine-grained updates, SSR, streaming, and route-level loading | Astro for content; Solid + Vite for client-only rendering; Marko, Leptos, or HTMX under the rendering profiles below |
 | Static/content delivery | Astro with islands | Sends little JavaScript and supports pre-rendering | The page is an interactive application rather than content |
 | Frontend tooling | Vite with its supported Rolldown integration, TypeScript, Oxlint + Oxfmt | Fast builds, linting, and formatting | A required plugin needs a supplementary tool |
 | JavaScript runtime | Bun for tooling and the regional SSR server | One runtime for compatible local tools and server execution | Workers is an alternative edge deployment target with a different runtime |
@@ -87,9 +87,19 @@ Use v2's `vite.config.ts` and one deployment plugin, following its order and env
 
 Prerender public routes where possible, stream expensive dynamic sections, and hydrate only what the selected rendering strategy supports. Solid's fine-grained reactivity reduces update work; it does not automatically make every SolidStart page an islands architecture. For content with isolated interactive widgets, Astro + Solid islands is the recommended alternative.
 
+### Alternative rendering profiles
+
+**[Marko 6](https://markojs.com/docs/introduction/welcome-to-marko)** is recommended when streaming/resumable dynamic pages and fine-grained updates fit the product, particularly storefronts and marketplaces. Use compatible Marko Run/Vite integration and verify the actual Bun or edge artifact. Rust retains domain ownership; Marko handles rendering and justified SSR coordination. Use Marko-compatible UI, `@marko/type-check`, and scoped Prettier/`prettier-plugin-marko` for templates. Solid-specific libraries do not transfer automatically.
+
+**[Leptos](https://book.leptos.dev/ssr/index.html)** is a Rust UI alternative with supported Axum SSR, streaming, server functions, and optional islands. It can render pages and call Rust domain code in one service, replacing a separate JavaScript SSR tier. Interactive code ships as WASM with JavaScript glue; measure release bytes, startup, and hydration rather than assuming Rust makes the browser faster. Pin compatible releases, check native SSR and WASM builds separately, and authorize every server function. Retain OpenAPI for public/polyglot consumers.
+
+**[HTMX](https://htmx.org/docs/)** with Axum and escaping server templates is recommended for forms, search, pagination, and partial updates where server-owned HTML fits. Rust can serve pages, fragments, and domain operations directly. Preserve full-page navigation and native forms where possible; verify validation, focus, history, CSRF protection, and full-page versus fragment caching. Account for network round trips and server load; offline-heavy and highly local interaction may favor a client framework.
+
+SolidStart remains the general interactive default. A selected rendering profile determines its own UI/state/tooling libraries, while sharing accessibility, data ownership, and measurement requirements. It does not require installing the other profiles.
+
 ### Bun, package management, and deployment
 
-Use **Bun** for dependency installation, compatible scripts, tests targeting Bun, and the regional SSR runtime. Use SolidStart's [deployment plugin](https://docs.solidjs.com/solid-start/v2/guides/deployment-plugins) with [Nitro's Bun preset](https://nitro.build/deploy/runtimes/bun) and test the actual production output. Keep application business logic in Rust; the JavaScript server renders pages and coordinates page data.
+Use **Bun** for required JavaScript dependencies, compatible scripts, tests targeting Bun, and a selected JavaScript SSR tier. For SolidStart, use its [deployment plugin](https://docs.solidjs.com/solid-start/v2/guides/deployment-plugins) with [Nitro's Bun preset](https://nitro.build/deploy/runtimes/bun) and test the actual production output. Keep application business logic in Rust; a JavaScript server renders pages and coordinates page data when the chosen profile needs one.
 
 **pnpm is a package manager**, so it can replace Bun's install/workspace tooling while Bun remains the runtime. Some pnpm distributions run without a separate Node installation; that does not change the runtime requirements of tools and application scripts they launch. Pin one package manager and lockfile per workspace.
 
@@ -210,7 +220,7 @@ Use Tower middleware for request IDs, deadlines, body limits, compression, rate 
 
 Bound spawned tasks, connection pools, and buffers. Use a bounded blocking pool or dedicated compute workers for CPU-intensive work; consider Rayon for appropriate parallel CPU workloads. Profile allocations, serialization, and lock contention before changing allocators or using unsafe optimizations. Release builds, realistic concurrency, and equivalent middleware are required for a useful comparison.
 
-Publish OpenAPI for browser, mobile, and polyglot consumers, using `utoipa` or a reviewed specification. Generate TypeScript types with [openapi-typescript](https://openapi-ts.dev/) and use `openapi-fetch` or another generated client. oRPC's TypeScript inference does not cross a Rust boundary automatically. It can remain in a separate TypeScript service, but adding that service solely to wrap Rust creates another hop and contract to maintain.
+Publish OpenAPI for public, mobile, polyglot, or separate TypeScript web clients, using `utoipa` or a reviewed specification. Generate TypeScript types with [openapi-typescript](https://openapi-ts.dev/) and use `openapi-fetch` or another generated client where applicable. Leptos server functions and HTML fragment handlers can serve first-party UI without a duplicate JSON API. oRPC's TypeScript inference does not cross a Rust boundary automatically. It can remain in a separate TypeScript service, but adding that service solely to wrap Rust creates another hop and contract to maintain.
 
 For internal Rust services, begin with HTTP and OpenAPI. Add gRPC with Tonic and Protobuf when streaming, strict service contracts, or language-neutral internal RPC justify the operational cost. Avoid a service mesh until service count and failure modes warrant one.
 
@@ -335,7 +345,7 @@ Define SLOs and error budgets for the user-visible paths. Production readiness i
 
 Set a workload before setting a target. Record p50, p95, and p99 latency, throughput, error rate, CPU, memory, allocations, database time, and network bytes. Run load tests against production-like data and hardware; a synthetic hello-world benchmark cannot select this stack.
 
-For web UI, measure field data at the 75th percentile. Current Core Web Vitals “good” thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms, and CLS ≤ 0.1. Set route-specific budgets for HTML, JavaScript, images, and fonts, then enforce them in CI and a real-browser smoke test.
+For web UI, measure field data at the 75th percentile. Current Core Web Vitals “good” thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms, and CLS ≤ 0.1. Set route-specific budgets for HTML, JavaScript/WASM, images, and fonts, then enforce them in CI and a real-browser smoke test.
 
 Consider these optimization opportunities, starting with the measured bottleneck:
 
@@ -350,7 +360,7 @@ Use **Vitest** for frontend and TypeScript package tests, **Testing Library** fo
 
 For the Turso profile, run integration tests against the selected engine and access mode, including contention, synchronization conflicts, restarts, and restoration. For Effect adoption, verify error mapping, cancellation, resource cleanup, and concurrency limits as well as successful requests.
 
-For a public web app, a useful initial budget is under 100 KiB compressed JavaScript on the critical route, LCP under 2 seconds at the chosen test profile, INP under 200 ms, and CLS under 0.1. These are engineering budgets, not universal guarantees. The current Core Web Vitals “good” thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms, and CLS ≤ 0.1 at the 75th percentile of field data. Publish the device, connection, region, and cache state beside any stricter claim.
+For a public web app, a useful initial budget is under 100 KiB compressed client code (JavaScript plus WASM) on the critical route, LCP under 2 seconds at the chosen test profile, INP under 200 ms, and CLS under 0.1. Adjust the budget when product requirements justify it. These are engineering budgets, not universal guarantees. The current Core Web Vitals “good” thresholds are LCP ≤ 2.5 s, INP ≤ 200 ms, and CLS ≤ 0.1 at the 75th percentile of field data. Publish the device, connection, region, and cache state beside any stricter claim.
 
 ### Website quality checks
 
@@ -407,7 +417,7 @@ Use profiles and flamegraphs before changing allocators, introducing `unsafe`, o
 
 ### Stage 1: small production
 
-One Rust API, one SolidStart/Bun web process where SSR is needed, one PostgreSQL primary (or the Turso profile when data ownership fits), object storage, CDN/WAF, and a managed deployment. Add OpenTelemetry, backups, restore testing, deadlines, and a basic load test before adding more components. Database recovery controls must match the chosen engine and deployment mode.
+One Rust service, a SolidStart/Bun or Marko web process when the selected rendering profile needs it, one PostgreSQL primary (or the Turso profile when data ownership fits), object storage, CDN/WAF, and a managed deployment. Leptos or templates/HTMX can render within the Rust service. Add OpenTelemetry, backups, restore testing, deadlines, and a basic load test before adding more components. Database recovery controls must match the chosen engine and deployment mode.
 
 ### Stage 2: measured pressure
 
@@ -425,7 +435,7 @@ Adopt ClickHouse for analytical scans, DuckDB for embedded/batch analytics, Redp
 
 | Problem | Default | Scale or specialist path |
 | --- | --- | --- |
-| Frontend | SolidStart 2 + Bun + Vite/Rolldown | Astro islands; Solid + Vite for client-only pages |
+| Frontend | SolidStart 2 + Bun + Vite/Rolldown | Astro islands; Solid + Vite for client-only pages; Marko for resumability; Leptos for Rust UI; templates + HTMX for HTML-driven interaction |
 | Bun-side orchestration | Direct calls and `async`/`await` for simple page coordination | Effect for typed failures, resource scopes, and controlled concurrency |
 | Backend | Rust + Axum + Tokio + Tower | Modular services; gRPC/Tonic when the contract requires it |
 | Database | PostgreSQL 18 | Read replicas; Turso for embedded or tenant-owned data; ScyllaDB for a different partition model |

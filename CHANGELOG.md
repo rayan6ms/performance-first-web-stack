@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.13 — 2026-10-21
+
+- Add Marko, Leptos, and HTMX rendering profiles while retaining Rust domain ownership.
+- Scope UI/tooling defaults to the selected profile and include WASM in client code budgets.
+
 ## 0.1.12 — 2026-10-20
 
 - Add quality-based AVIF/JPEG XL selection, responsive fallbacks, and image processing guidance.

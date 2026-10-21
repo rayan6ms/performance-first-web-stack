@@ -6,6 +6,8 @@ Select specialist build/infrastructure components using their [admission criteri
 
 For Knip, Astro diagnostics, and applicable audit tooling, follow [website quality checks](quality.md).
 
+Selected Marko/Leptos/HTMX foundations also follow their [rendering profile](rendering-profiles.md), including template checks, formatter coverage, and separate native/WASM builds where applicable.
+
 ## Toolchain and version discipline
 
 - Verify changed/selected APIs and compatibility using installed code/types or matching official docs, including adapters, StyleX compiler, Bun, Rust MSRV/features, and database/extensions. Disclose gaps rather than inventing support.

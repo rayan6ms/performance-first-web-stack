@@ -14,7 +14,7 @@ A Bun BFF must follow [architecture and request-path criteria](architecture.md).
 - MUST authorize each action against its resource/tenant; supplied IDs and generated types grant no permission.
 - Parameterize values and construct queries safely. Map expected failures to stable public HTTP/error codes; correlate defects without exposing SQL, traces, secrets, or internals.
 - Avoid panics, `unwrap`, and `expect` for untrusted input or routine dependency failures; distinguish test/setup invariants from recoverable errors.
-- Review OpenAPI, generate compatible clients, and retain server validation. Generated types have no runtime enforcement, and TypeScript RPC inference does not cross Rust; do not add a forwarding service solely for inferred types.
+- For public/polyglot APIs and separate TypeScript API clients, review OpenAPI, generate compatible clients, and retain server validation. First-party HTML handlers or Leptos server functions follow their [rendering profile](rendering-profiles.md). Generated types have no runtime enforcement, and TypeScript RPC inference does not cross Rust; do not add a forwarding service solely for inferred types.
 
 ### Concurrency, cancellation, and resource control
 

@@ -1,21 +1,23 @@
 # Frontend, accessibility, and images
 
-Use for Solid UI/state/forms, rendering/accessibility, browser budgets, or image processing/delivery. Apply the [core policy](../AGENTS.md) and the sections relevant to the affected boundary.
+Use for UI/state/forms, rendering/accessibility, browser budgets, or image processing/delivery. Apply the [core policy](../AGENTS.md) and the sections relevant to the affected boundary.
 
 For a material performance claim, use the [measurement policy](performance.md); upload ownership uses [data services](data-services.md).
 
 For automated accessibility, browser performance, and public-site SEO audits, use [website quality checks](quality.md).
 
+For selected Marko, Leptos, or HTMX, use its [rendering profile](rendering-profiles.md) for UI/state/form choices. Solid-specific libraries below apply to Solid UI; accessibility, security, image delivery, and browser budgets apply across profiles.
+
 ## Frontend quality and browser budgets
 
 - Deliver a coherent responsive interface suited to the product/brand, with working controls, relevant loading/empty/error/success/denied states, and recoverable input.
-- Use StyleX for shared tokens when useful; verify compiler and Solid-compatible `stylex.attrs` in production SSR, lazy routes, hydration, themes, and extracted CSS. Otherwise prefer CSS Modules/native CSS.
-- Use Kobalte or Ark UI Solid primitives with correct focus/keyboard semantics. Aim for WCAG 2.2 AA; verify contrast, labels, reduced motion, zoom/reflow, and manual keyboard use beyond automated scans, including meaningful focus after loading, retry, and validation transitions complete. Preserve or deliberately move focus as the interaction requires; do not restore it over a user's move elsewhere.
-- Keep local interaction in signals/stores and persistent data in route/server state. Add a remote cache for required refetch, optimistic update, or offline behavior; do not duplicate every response in a global store.
-- Use native forms/actions where supported, with appropriate Valibot client validation. Validate and authorize server-bound requests in Rust when a backend is needed; local-only calculators do not require one. Keep locale and private SSR state isolated by request/tenant.
+- For Solid, use StyleX for shared tokens when useful; verify compiler and Solid-compatible `stylex.attrs` in production SSR, lazy routes, hydration, themes, and extracted CSS. Otherwise prefer CSS Modules/native CSS.
+- For Solid, use Kobalte or Ark UI Solid primitives with correct focus/keyboard semantics. Across profiles, aim for WCAG 2.2 AA; verify contrast, labels, reduced motion, zoom/reflow, and manual keyboard use beyond automated scans, including meaningful focus after loading, retry, and validation transitions complete. Preserve or deliberately move focus as the interaction requires; do not restore it over a user's move elsewhere.
+- For Solid, keep local interaction in signals/stores and persistent data in route/server state. Add a remote cache for required refetch, optimistic update, or offline behavior; do not duplicate every response in a global store.
+- Use native forms/actions where supported, with Valibot for applicable Solid client validation. Validate and authorize server-bound requests in Rust when a backend is needed; local-only calculators do not require one. Keep locale and private SSR state isolated by request/tenant.
 - Verify server-rendered forms before hydration or when JavaScript does not load. Provide working native submission or a clear fallback that cannot submit. A client `preventDefault` alone leaves default GET submission available and can expose named fields in the URL.
 - Minimize critical-route bytes/execution through route splitting, responsive images with stable dimensions, font subsets, prompt LCP discovery, and deferred optional libraries. Prefer compositor-friendly animation and virtualize expensive lists without losing accessibility.
-- For a public critical route, use a provisional budget of under 100 KiB compressed JavaScript and LCP under 2 s on a documented lab profile, unless product requirements justify a different budget. This is a project engineering target, not a universal guarantee.
+- For a public critical route, use a provisional budget of under 100 KiB compressed client code (JavaScript plus WASM) and LCP under 2 s on a documented lab profile, unless product requirements justify a different budget. This is a project engineering target, not a universal guarantee.
 - Track Core Web Vitals at the 75th percentile of field data: good thresholds are LCP <= 2.5 s, INP <= 200 ms, CLS <= 0.1; verify definitions before publishing. Label lab measurements separately and measure hydration/execution as well as transfer size.
 
 ## Images and delivery

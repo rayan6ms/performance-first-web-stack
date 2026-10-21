@@ -12,7 +12,7 @@ Static content without server features needs no API, database, queue, or SSR pro
 
 | Concern | Default | Conditional alternative |
 | --- | --- | --- |
-| Interactive web | SolidJS + SolidStart | Astro + Solid islands for content; Solid + Vite for deliberately client-only rendering |
+| Interactive web | SolidJS + SolidStart | Astro + Solid islands for content; Solid + Vite for client-only rendering; [Marko for streaming/resumability, Leptos for Rust UI, or server templates + HTMX for HTML-driven interactions](rendering-profiles.md) |
 | Static content | Astro with pre-rendering | Existing suitable static pipeline |
 | JavaScript runtime | Bun tooling and regional SSR | Verified compatible Workers target; Node.js only for a verified dependency/host requirement Bun cannot satisfy |
 | Package management | Bun | pnpm when Bun is unsuitable; npm only when both are unsuitable |
@@ -25,6 +25,7 @@ Static content without server features needs no API, database, queue, or SSR pro
 | Backend | Rust + Axum + Tokio + Tower, with supported Hyper | Native alternative for explicit constraints or reproducible equivalent-service evidence |
 | Public API contract | OpenAPI; `utoipa` when suitable | Reviewed explicit OpenAPI; gRPC/Tonic + Protobuf for internal streaming/contracts that require it |
 | Browser API client | Generated types + openapi-fetch or an equivalent client | Existing compatible generated client |
+| First-party UI transport | Rust API for a separate web tier | Direct Rust calls/Leptos server functions or HTML fragments in the selected rendering profile |
 | Transactional data | Patched PostgreSQL; verify support/provider compatibility for the PostgreSQL 18 baseline | Turso for embedded/tenant-owned data; specialized store for a demonstrated model |
 | PostgreSQL access | SQLx, explicit reviewed SQL, compile-time checks where macros apply | A justified abstraction with measured cost |
 | Cache | HTTP/CDN caching first | Valkey for measured hot reads, transient state, or coordination |
@@ -34,6 +35,8 @@ Static content without server features needs no API, database, queue, or SSR pro
 | Observability | OpenTelemetry with an appropriate backend | Managed service or Prometheus/VictoriaMetrics + Grafana/Tempo/Loki and profiling as needed |
 
 Use one authoritative contract/transaction model per boundary. Additional services, wrappers, or overlapping tools need a concrete requirement.
+
+For selected Marko, Leptos, or HTMX, read the relevant [rendering profile](rendering-profiles.md). It overrides overlapping Solid UI/tooling choices while preserving Rust domain ownership. Leptos/Axum or Axum templates/HTMX can render directly in Rust without a separate Bun process; calls within that service need no HTTP loopback.
 
 SolidStart 2 uses `vite.config.ts` and Vite's Environment API; do not copy v1 Vinxi/`app.config.ts` adapters into a v2 setup. Choose one deployment plugin and follow its documented order/environment mapping. With Nitro v3, use `solidStart(), nitro()` and the top-level `nitro` configuration, including the Bun preset. Verify the selected release's Vite peer range. Upstream documents Node 24+ as its supported baseline; Bun execution needs verification of development, build, and the production artifact rather than assuming Bun is covered by that support statement.
 
