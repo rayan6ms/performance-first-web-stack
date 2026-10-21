@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.12 — 2026-10-20
+
+- Add quality-based AVIF/JPEG XL selection, responsive fallbacks, and image processing guidance.
+- Recommend tsrs for compatible local TypeScript feedback while retaining official verification.
+- Add PGX for disposable agent databases, previews, and migration tests, with PostgreSQL compatibility checks.
+- Add rustd for compatible local Rust rebuilds, with standard rustc checks and builds retained.
+
 ## 0.1.11 — 2026-10-15
 
 - Add code and Astro diagnostics, accessibility checks, browser performance audits, and technical SEO guidance.

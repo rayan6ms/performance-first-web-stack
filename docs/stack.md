@@ -121,6 +121,8 @@ Bun-native APIs require Bun execution and are unavailable in browser code, Worke
 
 Use the Vite version supported by SolidStart and its deployment plugin. Current [Vite documentation](https://vite.dev/guide/) describes Rolldown as its production bundler; a separate manual bundler swap is unnecessary for that release line. Oxlint and Oxfmt handle linting and formatting. Keep a TypeScript type-check in CI because transpilation alone does not check types.
 
+Recommend **[tsrs](https://github.com/oxc-project/tsrs)** for faster local TypeScript feedback when its current release supports the project's language version, configuration, and framework. Pin it as a development dependency and expose a separate `types:fast` script such as `tsrs --noEmit -p tsconfig.json`, run with `bun run --bun types:fast`; adapt it for project references. While experimental, keep supported official TypeScript and framework checks in `verify` and CI, including `astro check` where applicable. Recheck the [compatibility report](https://github.com/oxc-project/tsrs/blob/main/docs/COMPATIBILITY.md) on adoption/upgrades, compare diagnostics and file coverage, and bound checker concurrency/memory. Faster checking does not establish faster browser execution.
+
 ### Styling and UI
 
 **StyleX** remains recommended for a reusable design system: atomic CSS extraction, token/theme variables, deterministic composition, and colocated styles are useful at scale. Its [compiler setup](https://stylexjs.com/docs/learn/installation/) moves style generation to build time. Dynamic values and style composition can still require runtime work, so compare the emitted CSS, JavaScript, and rendering cost instead of assuming zero overhead.
@@ -151,19 +153,36 @@ Plain functions and `async`/`await` remain the default for simple page coordinat
 
 ### Browser delivery
 
-Set explicit image dimensions, use responsive AVIF/WebP where supported, subset fonts, and split bundles by route. Reserve lazy loading for off-screen content; the LCP image needs prompt discovery and loading. Keep analytics, editors, charts, and nonessential widgets out of the initial critical path. Measure browser execution and hydration as well as compressed bytes.
+Set explicit image dimensions, choose responsive image formats by visual quality and delivered bytes with compatible fallbacks, subset fonts, and split bundles by route. Reserve lazy loading for off-screen content; the LCP image needs prompt discovery and loading. Keep analytics, editors, charts, and nonessential widgets out of the initial critical path. Measure browser execution and hydration as well as compressed bytes.
 
 ## Images and delivery
 
 Prefer reusable variants generated during builds or uploads where the image set and required sizes allow it, then serve them through a CDN. Cached on-demand transformations suit changing layouts or media libraries where precomputing every variant costs more. Keep expensive processing out of the normal page/API path unless a synchronous result is required.
 
+Prefer the format with the best visual quality and compression balance for the actual image and rendered size: usually the smallest file that meets the intended quality. Evaluate **AVIF and JPEG XL (`.jxl`)** for photographs; JXL is particularly useful for high-fidelity/lossless images and progressive rendering. Compare visual results rather than identical numeric quality settings, and include browser decode latency and encoding resources in the tradeoff. Keep useful WebP and JPEG/PNG fallbacks. [AVIF is widely supported](https://web-platform-dx.github.io/web-features-explorer/features/avif/); [JPEG XL coverage](https://caniuse.com/jpegxl) still varies by browser/version.
+
+Use native [`<picture>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/picture) or a framework equivalent to put the preferred format first. The browser selects the first supported matching source; it does not compare file sizes. For an image where JXL wins the comparison, a simple format fallback is:
+
+```html
+<picture>
+  <source type="image/jxl" srcset="/images/coast.jxl" />
+  <source type="image/avif" srcset="/images/coast.avif" />
+  <source type="image/webp" srcset="/images/coast.webp" />
+  <img src="/images/coast.jpg" width="1280" height="853" alt="Waves reaching a rocky coast" />
+</picture>
+```
+
+Put AVIF first when it gives the better result. Generate width-based `srcset`/`sizes` for responsive layouts; `<figure>` can wrap the picture and a caption but does not select formats. For a service that negotiates output using `Accept`, separate format variants in CDN/cache keys and send `Vary: Accept` where appropriate.
+
 - **[Astro `<Image>` / `<Picture>`](https://docs.astro.build/en/guides/images/):** the first choice in the content profile, with a compatible image service. A passthrough service performs no transformation.
 - **[Unpic](https://unpic.pics/img/):** responsive Solid components around an image CDN/service, using native loading behavior without adding a separate client-side image loader by default. The provider transforms the images.
 - **[vite-imagetools](https://github.com/JonasKruckenberg/imagetools/blob/main/packages/vite/README.md):** Sharp-backed generation of sizes, formats, and `srcset` data for imported static Vite assets. Use it when the existing framework pipeline does not cover that role.
 - **[Cloudflare Images transformations](https://developers.cloudflare.com/images/optimization/transformations/overview/):** managed processing and edge-cached variants, including images stored in R2. R2 alone provides no image transformation.
-- **[imgproxy](https://docs.imgproxy.net/):** a self-operated libvips HTTP transformer behind a CDN/cache, independent of the Rust application service.
+- **[imgproxy](https://docs.imgproxy.net/):** a self-operated libvips HTTP transformer behind a CDN/cache, independent of the Rust application service. It supports [still AVIF and JPEG XL output](https://docs.imgproxy.net/latest/image_formats_support); verify the deployed version and configuration. Check each provider/framework's supported formats before selecting a pipeline.
 
-**[Bun.Image](https://bun.com/docs/runtime/image)** can process supported images in Bun-hosted jobs or build tools without a separate addon. **[Sharp](https://sharp.pixelplumbing.com/)** also runs under Bun and offers broader formats/operations. As checked on 2026-10-08, Bun's AVIF/HEIC support is unavailable on Linux and depends on OS codecs/hardware elsewhere; verify the actual processing target. Bun Image supplies transformation, while responsive markup and endpoint/cache behavior need their own integration. Vendor processing benchmarks do not establish better visual quality, compression, or browser performance.
+Prefer **[Sharp](https://sharp.pixelplumbing.com/)** for portable resizing and AVIF/WebP output; it also runs under Bun. For JPEG XL variants, use **[libjxl's `cjxl`](https://github.com/libjxl/libjxl/blob/main/doc/man/cjxl.txt)** in bounded build/upload jobs. Preserve originals and derive variants without repeated lossy re-encoding. Sharp's [JXL output](https://sharp.pixelplumbing.com/api-output/#jxl) is experimental and excluded from prebuilt binaries, so Sharp-backed integrations do not automatically provide production JXL encoding.
+
+**[Bun.Image](https://bun.com/docs/runtime/image)** can process supported images in Bun-hosted jobs or build tools without a separate addon. As checked on 2026-10-20, Bun's AVIF/HEIC support is unavailable on Linux and depends on OS codecs/hardware elsewhere; no JXL encoder is documented. Verify the actual processing target. Bun Image supplies transformation, while responsive markup and endpoint/cache behavior need their own integration. Vendor processing benchmarks do not establish better visual quality, compression, or browser performance.
 
 Generate appropriate `srcset`/`sizes`, preserve aspect ratios and stable dimensions, and load the LCP image promptly. Bound source access, bytes/pixels, variant counts, and concurrency; isolate transformation capacity from latency-sensitive API work. Version source/transform cache keys and preserve private-file authorization for originals, variants, and caches. Compare equivalent visual quality, delivered bytes, cold/cache-hit latency, throughput, CPU/memory, and cost.
 
@@ -212,6 +231,8 @@ Use WAL archiving, point-in-time recovery, encrypted backups, and a restore dril
 Use **SQLx** for explicit queries, migrations, and compile-time query checks where its macros are used. Keep offline query metadata synchronized if builds run without a database, and still test dynamic queries against PostgreSQL. Cap total application pool sizes across replicas so autoscaling cannot exhaust the database.
 
 For self-managed PostgreSQL, **[pgBackRest](https://pgbackrest.org/)** is the recommended backup/WAL tool; managed PostgreSQL can provide equivalent backup and PITR capabilities. An object store such as R2 can be a backup destination when the tool's S3 integration has been verified. Define retention, independent access credentials, recovery point objective (RPO), and recovery time objective (RTO). High availability and backups serve different failure modes.
+
+For disposable agent sandboxes, branch previews, and migration tests with frequent create/clone/discard cycles, consider **[PGX](https://github.com/pgrundev/pgx)**, the Rust database runtime at [pgx.dev](https://pgx.dev/). Its focus is provisioning density and low idle overhead, not universally faster SQL; copy-on-write clones require a supporting storage backend. Use sanitized fixtures, independent task URLs, and TTLs. Verify SQLx connections, migrations, and queries against its [compatibility gate](https://github.com/pgrundev/pgx/blob/main/docs/pgx/compatibility-gate.md), and retain real PostgreSQL integration and metadata checks. As checked on 2026-10-20, PGX is beta, not crash-safe, and cannot load existing PostgreSQL C extensions; one runtime shares a crash domain. Keep authoritative production state in PostgreSQL, pin a tested PGX release, and revisit its limits on upgrades.
 
 ### Turso and embedded data
 
@@ -372,6 +393,10 @@ Use **Wasmtime** for a controlled WebAssembly runtime in a service or plugin bou
 
 #### Build acceleration
 
+**[rustd](https://github.com/DioxusLabs/rustd)** is an experimental local option for repeated Rust rebuilds. Recheck current status/platform support before adoption or upgrades, pin its release and exact supported Rust toolchain with `rust-src`, and use explicit `cargo rustd build` / `cargo rustd run` commands. As checked on 2026-10-20, its daemon builds lack borrow checking and have known correctness gaps: run a real rustc-backed check before executing changed daemon-built code, and retain standard Cargo/rustc checks, Clippy, tests, and release builds in `verify`/CI. Bypass configured rustd wrappers for those checks; [Cargo documents](https://doc.rust-lang.org/cargo/reference/environment-variables.html) clearing the workspace wrapper with `RUSTC_WORKSPACE_WRAPPER=`, for example `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` on POSIX hosts. Keep verification artifacts separate where needed.
+
+Compare warm rebuild time, startup, memory, and cache cost on the application. Use ordinary Cargo when daemon compatibility or correctness fails, and revisit limitations against the selected release rather than anticipated fixes. Bound resources and preserve other projects' shared daemon/configuration; global wrapper setup is a separate workflow choice.
+
 Use Bazel for a large polyglot build graph, remote caching, and reproducible artifacts. **EngFlow** and **BuildBarn** are remote execution/cache options when organization scale justifies them. Measure cache hit rate and end-to-end developer wait time; a remote cache that misses often can be slower than a local build.
 
 #### Specialist optimization
@@ -410,7 +435,7 @@ Adopt ClickHouse for analytical scans, DuckDB for embedded/batch analytics, Redp
 | Analytics | PostgreSQL queries | DuckDB for local/batch; ClickHouse for columnar analytics |
 | Search | PostgreSQL FTS | Tantivy, Meilisearch, Algolia, or OpenSearch |
 | Objects | R2 or S3-compatible storage | Media processing service or multi-region storage |
-| Images | Reusable variants + CDN; Astro components or Unpic for markup | vite-imagetools for static assets; Bun Image or Sharp in suitable jobs; Cloudflare Images or imgproxy for dynamic delivery |
+| Images | Reusable variants + CDN; responsive markup and AVIF/JXL chosen by quality, bytes, and decode latency, with fallbacks | Sharp/vite-imagetools for AVIF/WebP; cjxl for JXL; suitable Bun Image jobs; Cloudflare Images or imgproxy for dynamic delivery |
 | Native Bun APIs | S3Client, SQL, or Markdown for required Bun-owned work/tooling | Rust clients for Rust-owned paths; platform bindings or portable SDKs where appropriate |
 | Networking | CDN/WAF and direct origin | Cloudflare Load Balancing; Envoy + Cilium on Kubernetes |
 | Observability | OpenTelemetry + managed backend | Prometheus/VictoriaMetrics, Grafana, Tempo, Loki, Parca/Pyroscope |

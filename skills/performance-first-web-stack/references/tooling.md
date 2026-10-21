@@ -19,6 +19,21 @@ When type checking fails in third-party declarations, first inspect compatible d
 
 For new foundations, expose one documented `verify` command covering applicable non-mutating frontend types, Rust checks, lint/format, meaningful local tests, and contract checks; retain a suitable existing equivalent. Keep individual checks available and propagate failures. Builds, code generation that updates source, live-service checks, migrations, and deployment remain explicit commands. Do not add no-op checks or test infrastructure just to fill the umbrella.
 
+## Development accelerators
+
+### TypeScript: tsrs
+
+- Recommend [tsrs](https://github.com/oxc-project/tsrs) for fast local frontend TypeScript feedback in compatible projects. Before adoption or upgrades, check the current release's TypeScript baseline, [supported features](https://github.com/oxc-project/tsrs/blob/main/docs/COMPATIBILITY.md), host binaries, and framework/configuration fit; pin a tested version as a development dependency. Resolve current gaps rather than assuming upcoming fixes are available.
+- Expose a separate local script such as `types:fast` running `tsrs --noEmit -p tsconfig.json`, invoked with `bun run --bun types:fast`; adapt it to the actual configs/project references. Keep supported official TypeScript and framework checks, including `astro check` where applicable, in `verify` and CI while tsrs is experimental. Do not replace emit/code generation or editor integrations merely to add faster checking.
+- Compare file coverage, diagnostics, and failure exit codes against the project's official checks on representative valid/invalid code before relying on local results; repeat after upgrades. Isolate incremental caches between compilers where necessary and bound checker threads/memory using version-supported options. Measure actual developer wait and memory rather than adopting benchmark multipliers as guarantees.
+
+### Rust: rustd
+
+- Use [rustd](https://github.com/DioxusLabs/rustd) as an experimental local accelerator for repeated Rust builds on a supported host. Before adoption or upgrades, recheck upstream status, platform support, and the exact compatible Rust toolchain/`rust-src`; pin the tested combination. Keep its binaries together and prefer explicit `cargo rustd build` / `cargo rustd run` commands over enabling a user-wide Cargo wrapper.
+- As checked on 2026-10-20, daemon builds lack borrow checking and have known correctness gaps. Run a real rustc-backed check before executing changed daemon-built code. Keep standard Cargo/rustc checks, Clippy, tests, and release builds authoritative in `verify`/CI, bypassing a configured rustd wrapper; on supported POSIX hosts, `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` clears that workspace wrapper. Keep verification artifacts separate from daemon-patched executables where needed.
+- Reproduce daemon errors or unexpected behavior with ordinary Cargo; switch the affected workflow back to Cargo when compatibility/correctness fails. Do not suppress compiler errors or assume the daemon automatically falls back. Re-evaluate these restrictions only when the selected release's support and project checks justify it.
+- Bound daemon memory, cache storage, and build concurrency alongside other tools. It may serve several projects/worktrees; do not stop a shared daemon or rewrite global Cargo configuration as routine project cleanup. Measure warm rebuild gains and cold-start/resource costs on the actual project.
+
 ## Native Bun capabilities
 
 CONDITIONAL: use `Bun.S3Client` for S3/R2/presigning, `Bun.SQL` for PostgreSQL/MySQL/SQLite, or `Bun.markdown` for simple content in existing/required Bun-owned work or build tools. Keep authoritative domain data/access in Rust/SQLx; do not add a Bun hop to use these APIs. Preserve schemas/migrations; local SQLite is not Turso. Check Markdown API maturity, sanitize untrusted HTML, and use HTML/custom rendering for Solid rather than its React renderer. Bun APIs do not run in browsers, Workers, or Rust; use native clients/bindings there.
