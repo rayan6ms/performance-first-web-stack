@@ -131,7 +131,9 @@ Bun-native APIs require Bun execution and are unavailable in browser code, Worke
 
 Use the Vite version supported by SolidStart and its deployment plugin. Current [Vite documentation](https://vite.dev/guide/) describes Rolldown as its production bundler; a separate manual bundler swap is unnecessary for that release line. Oxlint and Oxfmt handle linting and formatting. Keep a TypeScript type-check in CI because transpilation alone does not check types.
 
-Recommend **[tsrs](https://github.com/oxc-project/tsrs)** for faster local TypeScript feedback when its current release supports the project's language version, configuration, and framework. Pin it as a development dependency and expose a separate `types:fast` script such as `tsrs --noEmit -p tsconfig.json`, run with `bun run --bun types:fast`; adapt it for project references. While experimental, keep supported official TypeScript and framework checks in `verify` and CI, including `astro check` where applicable. Recheck the [compatibility report](https://github.com/oxc-project/tsrs/blob/main/docs/COMPATIBILITY.md) on adoption/upgrades, compare diagnostics and file coverage, and bound checker concurrency/memory. Faster checking does not establish faster browser execution.
+For new compatible projects, prefer built-in **[Bun type checking](https://bun.com/docs/runtime/check)** with a pinned supporting release, using a script such as `bun check --no-script -p tsconfig.json`. Match its bundled TypeScript baseline to the framework, configuration, and editor; use `-b` where all referenced projects need checking. Compare coverage, diagnostics, and failure exits with supported official TypeScript before switching, retaining the existing checker until compatibility is established. Keep framework checks such as `astro check` and required declaration/code-generation tooling; Bun check emits neither declarations nor incremental build info.
+
+**[tsrs](https://github.com/oxc-project/tsrs)** remains an alternative local accelerator when its [compatibility](https://github.com/oxc-project/tsrs/blob/main/docs/COMPATIBILITY.md) and measured benefit justify it; retain accepted project-wide and framework checks when adding experimental feedback. Avoid redundant default accelerators, bound checker resources, and follow the [checking guidance](../skills/performance-first-web-stack/references/tooling.md#typescript-checking-and-faster-feedback). Faster checking does not establish faster browser execution.
 
 ### Styling and UI
 
@@ -318,6 +320,8 @@ Turborepo          JavaScript package task graph
 
 Useful platform tools include GitHub Actions, Release Please, Renovate, Just, direnv, SOPS with age, Trivy, `cargo-audit`, and `cargo-deny`. Use GitHub Actions for checks and release automation; keep credentials in the CI secret store and deploy with short-lived identity where the provider supports it. Treat remote build execution as an optimization with a measured cache hit rate, not a prerequisite for a fast local loop.
 
+Measure checkout, installation, Rust/frontend compilation, test setup/execution, and cache-transfer time before tuning CI. Bound combined worker pools and use affected-task selection only when the graph covers Rust and generated contracts as well as JavaScript. See the [CI guidance](../skills/performance-first-web-stack/references/tooling.md#build-and-ci-performance) for cache correctness, Git history, test isolation, runner choices, and optional hooks.
+
 Expose one documented verification command, such as `bun run verify` or `just verify`, covering applicable non-mutating frontend types, Rust checks, lint/format, meaningful local tests, and contract checks. Keep builds, live-service checks, migrations, and deployment explicit. Prefer stable compatible release combinations; document and pin any required prerelease adapter with its support limits and validation/fallback.
 
 ## Security and identity
@@ -411,7 +415,7 @@ Use Bazel for a large polyglot build graph, remote caching, and reproducible art
 
 #### Specialist optimization
 
-Use profiles and flamegraphs before changing allocators, introducing `unsafe`, or writing a native extension. Keep a benchmark suite for serialization, compression, SQL, request routing, and representative end-to-end flows. Re-run it on every runtime, compiler, database, or network change.
+Use profiles and flamegraphs before changing allocators, introducing `unsafe`, or writing a native extension. For measured Rust allocation or memory-access costs, compare contiguous/indexed storage, structure-of-arrays, inline collections, or bitsets using the [data-layout guidance](../skills/performance-first-web-stack/references/performance.md#rust-data-layout-and-allocation); preserve handle validity and account for mutation and capacity costs. Efficient design and safe caching can complement each other. Keep relevant serialization, compression, SQL, routing, and end-to-end benchmarks, rerunning affected measurements when their implementation or environment changes.
 
 ## Growth path
 

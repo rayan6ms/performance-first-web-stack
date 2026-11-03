@@ -18,4 +18,18 @@ Compare equivalent production-like artifacts and correctness/durability/middlewa
 
 Profile the affected path and address its dominant costs: unnecessary work/hops, data distance, safe caching, bytes/execution/copying, queries/batching, or contention/allocation. Prefer removing work before adding runtime/infrastructure complexity; no fixed optimization sequence is required.
 
+Efficient design and caching can complement each other. Retain useful HTTP/CDN/application caching with deliberate freshness, invalidation, and authorization; compare cold/miss and warm/hit behavior and account for cache memory and coordination costs. Follow the [data-service policy](data-services.md) for application caches.
+
 For non-baseline choices, record the metric/requirement, alternatives, benchmark/capacity evidence, owner, failures, data lifecycle, and removal path; revisit as workloads change.
+
+## Rust data layout and allocation
+
+Use these options for Rust hot paths where profiling identifies allocation, copying, or memory access as material. Compare release builds on representative sizes and access/mutation patterns; retain changes whose latency/throughput or memory benefit justifies their complexity. They do not prescribe a rewrite of I/O-bound web handlers or JavaScript collections.
+
+- Compare contiguous `Vec`/slice storage with hash maps when IDs are dense or iteration dominates; retain keyed structures for access patterns they serve well. Include mapping, insertion, deletion, and spare-capacity costs. Index handles need a validity model across removal, `swap_remove`, and slot reuse; use generations or another checked identity scheme where stale handles can survive.
+- Compare structure-of-arrays for repeated scans over selected fields with array-of-structures for operations consuming whole records. Account for keeping columns aligned and for update costs; use the access pattern rather than a universal layout preference.
+- Consider suitable borrowing, reuse, or capacity reservation to reduce repeated allocation/copying. For short collections, evaluate [SmallVec](https://docs.rs/smallvec/latest/smallvec/struct.SmallVec.html) with a measured inline capacity or [ArrayVec](https://docs.rs/arrayvec/latest/arrayvec/struct.ArrayVec.html) with a real hard bound and handled overflow. SmallVec can spill to the heap. Inline storage lives inside its containing value, which can itself be heap allocated; larger capacities also increase object/async-future size and possible stack pressure.
+- Consider bitsets for large dense flag collections or useful bulk set operations. Compare access/update cost, sparsity, and synchronization needs; ordinary booleans remain valid for small collections and independent fields.
+- Pack flags into spare index bits only for a demonstrated benefit, with explicit bit widths, capacity/overflow bounds, checked encoding/decoding, and handle-validity tests. Preserve external ID/wire contracts. JavaScript number bitwise operations use 32-bit integers; do not transfer Rust integer-packing assumptions to TypeScript.
+
+Use safe representations and APIs by default. These choices do not justify removing bounds/authorization checks or adding `unsafe` without the [Rust implementation policy](backend.md).

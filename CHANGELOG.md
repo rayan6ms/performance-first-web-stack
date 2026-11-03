@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.14 — 2026-11-03
+
+- Add profiled Rust data-layout and allocation choices with handle and capacity safeguards.
+- Prefer compatible built-in Bun type checking, with coverage validation and framework checks retained.
+- Add measured CI tuning across Rust and frontend tasks, caching, runners, and test isolation.
+
 ## 0.1.13 — 2026-10-21
 
 - Add Marko, Leptos, and HTMX rendering profiles while retaining Rust domain ownership.

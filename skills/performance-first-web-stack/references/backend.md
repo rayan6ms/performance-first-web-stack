@@ -24,7 +24,7 @@ A Bun BFF must follow [architecture and request-path criteria](architecture.md).
 - Supervise tasks, propagate supported cancellation/deadlines, drain on shutdown, and define ownership after disconnect.
 - Retry eligible transient failures with bounded jitter/backoff and total deadlines. Mutations need durable idempotency; cancellation cannot undo accepted side effects.
 - Reuse clients/pools, measure contention, and never hold critical locks/transactions across unrelated provider calls.
-- Profile allocation, copying, serialization, algorithms, and compression before low-level changes. `unsafe` needs demonstrated value, safety invariants, and validation.
+- Profile allocation, copying, serialization, algorithms, and compression before low-level changes. Use the [Rust data-layout guidance](performance.md#rust-data-layout-and-allocation) for collection and representation choices. `unsafe` needs demonstrated value, safety invariants, and validation.
 
 ## Effect in the Bun tier
 
