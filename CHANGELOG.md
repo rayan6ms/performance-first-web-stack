@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.15 — 2026-11-04
+
+- Strengthen benchmark validity, pipeline cost accounting, and hardware-specific claims.
+- Add conditional hot/cold splitting, AoSoA, and vectorization guidance for Rust.
+
 ## 0.1.14 — 2026-11-03
 
 - Add profiled Rust data-layout and allocation choices with handle and capacity safeguards.
