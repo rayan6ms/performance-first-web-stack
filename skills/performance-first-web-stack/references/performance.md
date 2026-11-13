@@ -24,7 +24,7 @@ Profile the affected path and address its dominant costs: unnecessary work/hops,
 
 Efficient design and caching can complement each other. Retain useful HTTP/CDN/application caching with deliberate freshness, invalidation, and authorization; compare cold/miss and warm/hit behavior and account for cache memory and coordination costs. Follow the [data-service policy](data-services.md) for application caches.
 
-For non-baseline choices, record the metric/requirement, alternatives, benchmark/capacity evidence, owner, failures, data lifecycle, and removal path; revisit as workloads change.
+For material non-baseline choices, record the requirement or expected gain, alternatives, supporting evidence, tradeoffs, and validation. Added services also need ownership, failure behavior, data lifecycle, and a removal path; revisit affected decisions as workloads change.
 
 ## Rust data layout and allocation
 

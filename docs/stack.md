@@ -35,7 +35,7 @@ Use this profile for latency-sensitive APIs, high-traffic public applications, c
 5. Benchmark representative workloads in production-like conditions and validate with field data.
 6. Meet correctness and availability targets while optimizing performance; report failures alongside latency so dropped requests cannot make a benchmark look faster.
 
-The core stack is the default implementation. Capability recommendations cover workloads such as distributed events, search, analytics, and multi-region delivery. They can be part of the initial design when traffic projections, load tests, or product requirements justify them. A guide should explain advanced options before a reader needs them.
+Use the core stack as the baseline. Evaluate alternatives when requirements or evidenced benefits justify their compatibility, maintenance, operating, and migration costs. Capability recommendations cover workloads such as distributed events, search, analytics, and multi-region delivery. Include them in the initial design when traffic projections, load tests, or product requirements justify them.
 
 ## Reference architecture
 
@@ -78,6 +78,10 @@ Cloudflare Load Balancing is the recommended managed option for health-based rou
 | Files | Cloudflare R2 or S3-compatible object storage | Durable, inexpensive blob storage | Use a specialized media service for transcoding or delivery requirements |
 
 ## Frontend architecture
+
+Use [Impeccable](https://github.com/pbakaus/impeccable) as the default agent design skill for new interfaces and substantial visual work. Anthropic's [frontend-design](https://github.com/anthropics/skills/tree/main/skills/frontend-design) is the lightweight alternative for small, quick UI changes. Both are installed separately from this stack; use one primary design skill per task and preserve the project's brand, components, and browser budgets.
+
+Agents find or install relevant companions on demand using the [skill catalog](../skills/performance-first-web-stack/references/agent-skills.md). [UI SDK](https://github.com/vercel-labs/ui) is a beta option for custom behavior composition, including Solid; retain the default primitives unless a concrete need or user choice favors it, and measure client cost. Cloudflare's security-audit skill supports focused security guidance and explicitly requested audits.
 
 ### Solid and SolidStart
 
@@ -460,7 +464,7 @@ Adopt ClickHouse for analytical scans, DuckDB for embedded/batch analytics, Redp
 
 ## Decision record
 
-For every non-baseline component, record the limiting metric, workload and benchmark, alternatives considered, operational owner, failure mode, data lifecycle, security impact, and removal path. Revisit the decision after a major traffic or product change.
+For material departures, record the requirement or expected improvement, alternatives, tradeoffs, and relevant compatibility or measurement evidence. Added services also need an operational owner, failure behavior, data/security implications, and a removal path. Revisit affected decisions when workloads or requirements materially change.
 
 ## Further reading
 

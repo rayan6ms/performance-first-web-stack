@@ -8,9 +8,14 @@ For automated accessibility, browser performance, and public-site SEO audits, us
 
 For selected Marko, Leptos, or HTMX, use its [rendering profile](rendering-profiles.md) for UI/state/form choices. Solid-specific libraries below apply to Solid UI; accessibility, security, image delivery, and browser budgets apply across profiles.
 
+## Design workflow
+
+Use the [on-demand skill catalog](agent-skills.md) to obtain and load the appropriate design, browser, and component companions. Impeccable is the primary design default; Anthropic's frontend-design keeps small, quick changes simpler. Combine complementary roles, preserving the selected framework, components, brand, accessibility requirements, and browser budgets. Reuse recorded product decisions instead of repeating kickoff intake.
+
 ## Frontend quality and browser budgets
 
 - Deliver a coherent responsive interface suited to the product/brand, with working controls, relevant loading/empty/error/success/denied states, and recoverable input.
+- Consider beta [UI SDK](https://github.com/vercel-labs/ui) for explicitly selected behavior composition or a concrete gap in existing primitives. Use its matching framework adapter and `ui-sdk` skill when selected or already present; retain Kobalte/Ark UI Solid and suitable existing primitives otherwise. Measure the selected route's client cost and do not expose application actions to agents merely because the library supports it.
 - For Solid, use StyleX for shared tokens when useful; verify compiler and Solid-compatible `stylex.attrs` in production SSR, lazy routes, hydration, themes, and extracted CSS. Otherwise prefer CSS Modules/native CSS.
 - For Solid, use Kobalte or Ark UI Solid primitives with correct focus/keyboard semantics. Across profiles, aim for WCAG 2.2 AA; verify contrast, labels, reduced motion, zoom/reflow, and manual keyboard use beyond automated scans, including meaningful focus after loading, retry, and validation transitions complete. Preserve or deliberately move focus as the interaction requires; do not restore it over a user's move elsewhere.
 - For Solid, keep local interaction in signals/stores and persistent data in route/server state. Add a remote cache for required refetch, optimistic update, or offline behavior; do not duplicate every response in a global store.
