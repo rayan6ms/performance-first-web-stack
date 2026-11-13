@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.16 — 2026-11-13
+
+- Add browser-platform guidance using Google’s official Modern Web Guidance as a preferred maintained source.
+- Preserve browser/device requirements through kickoff and strengthen interaction, font, lifecycle, and HTML safety checks.
+- Improve FieldStock and RateCraft typography for user text scaling; preserve original trial records and scores.
+
 ## 0.1.15 — 2026-11-04
 
 - Strengthen benchmark validity, pipeline cost accounting, and hardware-specific claims.

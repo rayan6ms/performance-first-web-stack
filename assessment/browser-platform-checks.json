@@ -1,0 +1,250 @@
+{
+  "checked_on": "2026-11-13",
+  "environment": {
+    "runtime": "Bun 1.4.4",
+    "browser": "Headless Chromium 156.0.8078.4",
+    "platform": "Linux"
+  },
+  "scope": "Typography corrections on served production output; historical trial evidence and scores unchanged.",
+  "layout_conditions": {
+    "viewport_css_px": [
+      [
+        1280,
+        900
+      ],
+      [
+        320,
+        900
+      ]
+    ],
+    "root_font_css_px": [
+      16,
+      32
+    ],
+    "text_spacing_override": {
+      "line_height": 1.5,
+      "paragraph_margin_bottom": "2em",
+      "letter_spacing": "0.12em",
+      "word_spacing": "0.16em"
+    },
+    "checks": [
+      "No document horizontal overflow",
+      "No visible in-flow element extending past viewport",
+      "Screenshot inspection"
+    ]
+  },
+  "demos": [
+    {
+      "id": "04-ratecraft",
+      "css_sha256": "b221466a02edae6e021bf31a967678b2b3848236545248756b7ee8931985b157",
+      "commands": [
+        {
+          "argv": [
+            "bun",
+            "install",
+            "--frozen-lockfile",
+            "--network-concurrency",
+            "2",
+            "--concurrent-scripts",
+            "2"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "check"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "build"
+          ],
+          "exit_code": 0
+        }
+      ]
+    },
+    {
+      "id": "05-fieldstock",
+      "css_sha256": "4d1e2eff831c857d049dff3f442344e65d9ede4f43e15f4a966c054b74871749",
+      "commands": [
+        {
+          "argv": [
+            "bun",
+            "install",
+            "--frozen-lockfile",
+            "--network-concurrency",
+            "2",
+            "--concurrent-scripts",
+            "2"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "typecheck"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "lint"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "format:check"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "test"
+          ],
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "bun",
+            "run",
+            "build"
+          ],
+          "exit_code": 0
+        }
+      ]
+    }
+  ],
+  "browser_results": [
+    {
+      "label": "ratecraft-wide",
+      "width": 1280,
+      "scroll": 1280,
+      "root": 16,
+      "h1": 68.8,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft-320-16",
+      "width": 320,
+      "scroll": 320,
+      "root": 16,
+      "h1": 40,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft-320-32",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 80,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft-1280-32",
+      "width": 1280,
+      "scroll": 1280,
+      "root": 32,
+      "h1": 92.8,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft-narrow-text-spacing",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 80,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft-result-enlarged",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 80,
+      "overflow": []
+    },
+    {
+      "label": "ratecraft",
+      "behavior": "passed",
+      "pageErrors": [],
+      "health": null
+    },
+    {
+      "label": "fieldstock-wide",
+      "width": 1280,
+      "scroll": 1280,
+      "root": 16,
+      "h1": 49.6,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock-320-16",
+      "width": 320,
+      "scroll": 320,
+      "root": 16,
+      "h1": 32,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock-320-32",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 64,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock-1280-32",
+      "width": 1280,
+      "scroll": 1280,
+      "root": 32,
+      "h1": 73.6,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock-narrow-text-spacing",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 64,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock-retry-enlarged",
+      "width": 320,
+      "scroll": 320,
+      "root": 32,
+      "h1": 64,
+      "overflow": []
+    },
+    {
+      "label": "fieldstock",
+      "behavior": "passed",
+      "pageErrors": [],
+      "health": "mocked"
+    }
+  ],
+  "limits": [
+    "Chromium only; no Firefox, WebKit, real-device, webview, OS text-scale or screen-reader certification.",
+    "A 32px root font simulates an enlarged font preference; it is not a browser zoom or OS-setting test.",
+    "No field performance, deployment, full accessibility conformance, or new trial score is claimed.",
+    "FieldStock browser health responses were mocked; the Rust service and contract generation were not rerun for this CSS-only change."
+  ],
+  "behavior_checks": [
+    "RateCraft: invalid keyboard submission focuses income; 6000 / 120 produces $50.00 with enlarged text and spacing.",
+    "FieldStock: mocked healthy, unavailable and recovery states preserve retry-button keyboard focus with enlarged text and spacing."
+  ]
+}

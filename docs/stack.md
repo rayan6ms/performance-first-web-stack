@@ -165,7 +165,9 @@ Plain functions and `async`/`await` remain the default for simple page coordinat
 
 ### Browser delivery
 
-Set explicit image dimensions, choose responsive image formats by visual quality and delivered bytes with compatible fallbacks, subset fonts, and split bundles by route. Reserve lazy loading for off-screen content; the LCP image needs prompt discovery and loading. Keep analytics, editors, charts, and nonessential widgets out of the initial critical path. Measure browser execution and hydration as well as compressed bytes.
+Set explicit image dimensions, choose responsive image formats by visual quality and delivered bytes with compatible fallbacks, subset fonts while preserving required glyph coverage, and split bundles by route. Reserve lazy loading for off-screen content; the LCP image needs prompt discovery and loading. Keep analytics, editors, charts, and nonessential widgets out of the initial critical path. Measure browser execution and hydration as well as compressed bytes.
+
+Use Google's official **[Modern Web Guidance](https://github.com/GoogleChrome/modern-web-guidance)** for current browser-platform patterns. Prefer suitable native HTML/CSS, preserve essential fallbacks, and record browser/device requirements. The [browser platform reference](../skills/performance-first-web-stack/references/browser-platform.md) covers forms, text scaling, scheduling, fonts, navigation, and page lifecycle without changing the framework defaults.
 
 ## Images and delivery
 

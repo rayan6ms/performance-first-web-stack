@@ -27,6 +27,10 @@ A code review on 2026-10-09 reproduced contract-file truncation when Rust compil
 
 The same review reproduced the recorded retry-focus defect in a browser. The button now exposes `aria-disabled` and ignores activation during a pending request, preserving focus without duplicate calls. Headless Chromium verified keyboard activation, healthy response, a controlled browser-network failure, recovery against the real Rust API, and a narrow viewport. Native T3 preview automation was unavailable. These changes are listed in provenance and do not revise the original score or browser records.
 
+A browser-platform review on 2026-11-13 replaced FieldStock's pixel text sizes with relative units and allowed its header to wrap. Both demos' fluid headings now include font-relative sizing. These changes improve accommodation of user text preferences; they do not revise the original trial scores or evidence. See the [current check record](browser-platform-checks.json).
+
+Current verification passed frozen installs, existing type/lint/format checks, 12 RateCraft tests, two FieldStock health-client tests and both production builds on Bun 1.4.4. Headless Chromium 156 checked served output at 1280 and 320 CSS pixels with 16px/32px root fonts and a narrow text-spacing override. It exposed RateCraft grid clipping, corrected with shrinkable grid tracks and wrapping; the final checks passed without horizontal overflow. Keyboard calculation/validation and FieldStock retry-focus recovery passed. FieldStock responses were mocked; Rust was not rebuilt. Other browser engines, real devices and screen readers were not checked.
+
 ## Improvements informed by this assessment
 
 Current product guidance checks focus after asynchronous transitions, recommends a documented verification command with clear coverage, puts readiness/commands/open IDs first in the durable record, assesses required prereleases explicitly, and stamps release provenance. Published demos remain historical evidence, not proof that the revised guidance fixes every future agent's behavior.

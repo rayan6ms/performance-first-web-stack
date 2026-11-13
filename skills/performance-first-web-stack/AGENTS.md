@@ -46,6 +46,7 @@ New architecture starts with architecture/tooling and selected capabilities. Loc
 | Turso/Rust SDKs, embedded/tenant data, or offline/sync behavior | [Turso](references/turso.md) |
 | Caches, JetStream/queues, or uploads/file lifecycle | [Data services](references/data-services.md) |
 | UI/state/forms/accessibility, browser delivery, or images | [Frontend and images](references/frontend.md) |
+| Browser APIs/support, native HTML/CSS, text scaling, scheduling, or page lifecycle | [Browser platform](references/browser-platform.md) |
 | Auth/sessions/resource policy, webhooks, or external/AI providers | [Integrations](references/integrations.md) |
 | Observability, production/recovery, rollout, or release validation | [Operations and delivery](references/operations.md) |
 | Performance claims, benchmarks, capacity, or architecture replacements | [Performance measurement](references/performance.md) |

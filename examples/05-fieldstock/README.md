@@ -8,7 +8,7 @@ Quick start (Bun 1.4.0 and Rust 1.97.1): `bun install --frozen-lockfile`, then r
 
 ## Published demo scope
 
-This began as a portable copy of trial `05d39d5`, assessed using source guidance `ff254aa`. It retains that historical policy and dependency versions; current guidance is distributed separately. Later [demo corrections](../../assessment/REPORT.md#demo-corrections) protect contract generation and preserve retry focus. Original trial records and scores remain unchanged. See [prepared requirements](../../assessment/cases/05-fieldstock/brief.md) and [answers](../../assessment/cases/05-fieldstock/answers.md).
+This began as a portable copy of trial `05d39d5`, assessed using source guidance `ff254aa`. It retains that historical policy and dependency versions; current guidance is distributed separately. Later [demo corrections](../../assessment/REPORT.md#demo-corrections) protect contract generation, preserve retry focus, and improve text scaling. Original trial records and scores remain unchanged. See [prepared requirements](../../assessment/cases/05-fieldstock/brief.md) and [answers](../../assessment/cases/05-fieldstock/answers.md).
 
 No secrets, dependency caches, build output, database volumes, or Git history are included. Historical results apply to the original host/state. Run the documented checks again on your environment. The interactive adapter is a pinned prerelease; review support before production use.
 

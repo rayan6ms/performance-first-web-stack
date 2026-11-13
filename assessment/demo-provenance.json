@@ -41,11 +41,15 @@
       },
       {
         "file": "README.md",
-        "reason": "Add publication scope, evidence links and reproduction limits."
+        "reason": "Add publication scope, evidence links and reproduction limits, including subsequent typography corrections."
       },
       {
         "file": "LICENSE",
         "reason": "Add the MIT notice to keep copied standalone demos licensed."
+      },
+      {
+        "file": "src/app.css",
+        "reason": "Improve user text scaling and narrow-layout wrapping; original trial results and scores are unchanged."
       }
     ]
   },
@@ -101,7 +105,7 @@
       },
       {
         "file": "README.md",
-        "reason": "Add publication scope, evidence links and reproduction limits."
+        "reason": "Add publication scope, evidence links and reproduction limits, including subsequent typography corrections."
       },
       {
         "file": "LICENSE",
@@ -125,7 +129,7 @@
       },
       {
         "file": "src/app.css",
-        "reason": "Post-publication bug fix: retain keyboard focus and block duplicate activation while the health request is pending."
+        "reason": "Post-publication bug fix: retain keyboard focus and block duplicate activation while the health request is pending. Improve user text scaling and narrow-layout wrapping; original trial results and scores are unchanged."
       }
     ]
   }

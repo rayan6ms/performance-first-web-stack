@@ -4,7 +4,7 @@ Use for UI/state/forms, rendering/accessibility, browser budgets, or image proce
 
 For a material performance claim, use the [measurement policy](performance.md); upload ownership uses [data services](data-services.md).
 
-For automated accessibility, browser performance, and public-site SEO audits, use [website quality checks](quality.md).
+For automated accessibility, browser performance, and public-site SEO audits, use [website quality checks](quality.md). Native HTML/CSS, browser support, forms/text scaling, scheduling, and lifecycle use [browser platform guidance](browser-platform.md).
 
 For selected Marko, Leptos, or HTMX, use its [rendering profile](rendering-profiles.md) for UI/state/form choices. Solid-specific libraries below apply to Solid UI; accessibility, security, image delivery, and browser budgets apply across profiles.
 
@@ -16,7 +16,7 @@ For selected Marko, Leptos, or HTMX, use its [rendering profile](rendering-profi
 - For Solid, keep local interaction in signals/stores and persistent data in route/server state. Add a remote cache for required refetch, optimistic update, or offline behavior; do not duplicate every response in a global store.
 - Use native forms/actions where supported, with Valibot for applicable Solid client validation. Validate and authorize server-bound requests in Rust when a backend is needed; local-only calculators do not require one. Keep locale and private SSR state isolated by request/tenant.
 - Verify server-rendered forms before hydration or when JavaScript does not load. Provide working native submission or a clear fallback that cannot submit. A client `preventDefault` alone leaves default GET submission available and can expose named fields in the URL.
-- Minimize critical-route bytes/execution through route splitting, responsive images with stable dimensions, font subsets, prompt LCP discovery, and deferred optional libraries. Prefer compositor-friendly animation and virtualize expensive lists without losing accessibility.
+- Minimize critical-route bytes/execution through route splitting, responsive images with stable dimensions, font subsets preserving required glyph coverage, prompt LCP discovery, and deferred optional libraries. Prefer compositor-friendly animation; virtualize only for measured benefit with preserved keyboard/reading/search behavior, considering pagination or rendering containment.
 - For a public critical route, use a provisional budget of under 100 KiB compressed client code (JavaScript plus WASM) and LCP under 2 s on a documented lab profile, unless product requirements justify a different budget. This is a project engineering target, not a universal guarantee.
 - Track Core Web Vitals at the 75th percentile of field data: good thresholds are LCP <= 2.5 s, INP <= 200 ms, CLS <= 0.1; verify definitions before publishing. Label lab measurements separately and measure hydration/execution as well as transfer size.
 

@@ -15,6 +15,7 @@ main {
   max-width: 1000px;
   padding: 40px 24px;
   margin: 0 auto;
+  overflow-wrap: anywhere;
 }
 p {
   margin: 0 0 16px;
@@ -34,8 +35,9 @@ p {
   letter-spacing: 0.12em;
 }
 h1 {
-  font-size: clamp(2.5rem, 6vw, 4.3rem);
+  font-size: clamp(2.5rem, calc(1.5rem + 3.5vw), 4.3rem);
   line-height: 1.1;
+  overflow-wrap: anywhere;
   letter-spacing: -0.045em;
   margin: 12px 0 20px;
 }
@@ -51,7 +53,7 @@ h1 em {
 }
 .calculator {
   display: grid;
-  grid-template-columns: 1.1fr 1fr;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
   border: 1px solid #b7c4ba;
   border-radius: 16px;
   overflow: hidden;
@@ -143,7 +145,7 @@ input:focus-visible {
   margin: 24px 0;
 }
 .rate {
-  font-size: clamp(2rem, 4vw, 3rem);
+  font-size: clamp(2rem, calc(1rem + 2vw), 3rem);
   font-weight: 750;
   line-height: 1.2;
   letter-spacing: -0.04em;
@@ -173,7 +175,7 @@ footer {
     margin-bottom: 40px;
   }
   .calculator {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
   }
   .form-panel,
   .result-panel {
