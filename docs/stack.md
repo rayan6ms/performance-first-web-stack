@@ -63,7 +63,7 @@ Cloudflare Load Balancing is the recommended managed option for health-based rou
 
 | Layer | Default | Why | Add or replace when |
 | --- | --- | --- | --- |
-| Interactive UI | SolidJS + SolidStart 2 | Fine-grained updates, SSR, streaming, and route-level loading | Astro for content; Solid + Vite for client-only rendering; Marko, Leptos, or HTMX under the rendering profiles below |
+| Interactive UI | SolidStart 2 + compatible Solid 1 | Fine-grained updates, SSR, streaming, and route-level loading | Astro for content; Solid 2 + Vite for compatible client-only pages; Marko, Leptos, or HTMX under the rendering profiles below |
 | Static/content delivery | Astro with islands | Sends little JavaScript and supports pre-rendering | The page is an interactive application rather than content |
 | Frontend tooling | Vite with its supported Rolldown integration, TypeScript, Oxlint + Oxfmt | Fast builds, linting, and formatting | A required plugin needs a supplementary tool |
 | JavaScript runtime | Bun for tooling and the regional SSR server | One runtime for compatible local tools and server execution | Workers is an alternative edge deployment target with a different runtime |
@@ -85,7 +85,7 @@ Agents find or install relevant companions on demand using the [skill catalog](.
 
 ### Solid and SolidStart
 
-SolidStart v2 is built on Solid v1 and Vite and has stable v2 releases. It supports deployment plugins such as Nitro and Cloudflare's Vite plugin. Keep it as the full-stack frontend default when SSR and routing serve the product. A client-only SPA is a different rendering choice, not an automatic performance upgrade.
+Solid 2 is stable. SolidStart 2.2.3 still requires Solid 1.9 and a router below 2.0, so keep the compatible Solid 1 stack for SSR. Astro's Solid adapter also requires Solid 1 on its current release line. For new client-only work, consider Solid 2 with `@solidjs/web` and `@solidjs/vite-plugin` when the project's component and test tooling supports it. Solid 2 changes JSX imports, stores, effect phases, and when writes become visible. Use the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1) for upgrades.
 
 Use v2's `vite.config.ts` and one deployment plugin, following its order and environment mapping. V1 Vinxi/`app.config.ts` examples use a different build model. The current v2 release accepts Vite 8 or 9 and documents Node 24+ as its supported baseline; verify development, build, and production execution separately when using Bun.
 
@@ -127,7 +127,7 @@ Consider native APIs for existing Bun web-tier responsibilities or build tooling
 
 - **[S3Client](https://bun.com/docs/runtime/s3):** S3/R2 object access and presigning when a Bun-owned task needs them. Verify provider operations and credential/signing behavior; Rust-owned paths use a supported Rust client, and Workers can use its R2 binding.
 - **[Bun.SQL](https://bun.com/docs/runtime/sql):** PostgreSQL, MySQL, or SQLite access for required Bun-owned data or tooling. Keep authoritative domain access in Rust/SQLx; avoid a new Bun hop solely to use this client. Preserve reviewed schemas/migrations, and remember that local SQLite is not a Turso integration.
-- **[Bun.markdown](https://bun.com/docs/runtime/markdown):** straightforward build/server content rendering. As checked on 2026-10-08, it is documented as unstable; pin and test the selected API. Sanitize untrusted HTML output. Retain Astro's content pipeline where its features are needed; use HTML/custom rendering for Solid rather than assuming the React renderer is compatible.
+- **[Bun.markdown](https://bun.com/docs/runtime/markdown):** straightforward build/server content rendering. The API is documented as unstable; pin and test the selected API. Sanitize untrusted HTML output. Retain Astro's content pipeline where its features are needed; use HTML/custom rendering for Solid rather than assuming the React renderer is compatible.
 
 Bun-native APIs require Bun execution and are unavailable in browser code, Workers, or Rust. Select them for covered requirements and measured benefits; retain suitable portable SDKs when needed.
 
@@ -149,7 +149,7 @@ StyleX is not restricted to React: its [`stylex.attrs` API](https://stylexjs.com
 Design tokens → StyleX theme variables → UI primitives → product components
 ```
 
-Use **Kobalte** for accessible Solid primitives or **Ark UI** for a broader headless component set with a Solid implementation. Build one product design system on the chosen primitives. Check keyboard navigation, focus management, and reduced-motion behavior. Prefer compositor-friendly animations, and virtualize large lists only when their rendering cost warrants it.
+For Solid 1, use **Kobalte** or **Ark UI** for accessible primitives. Check actual Solid 2 support before carrying either library into a Solid 2 project. The current UI SDK Solid adapter requires Solid 2, while the current Unpic Solid adapter requires Solid 1. Build one product design system on compatible primitives and verify keyboard navigation, focus management, and reduced-motion behavior.
 
 ### State, forms, and validation
 
@@ -165,7 +165,7 @@ Keep domain rules and the primary API in Rust. Direct browser-to-Rust requests s
 
 An existing or required Bun backend-for-frontend can use Effect under the routing criteria below; Rust retains authoritative domain and resource authorization rules.
 
-Plain functions and `async`/`await` remain the default for simple page coordination. Compare equivalent implementations for p95/p99 latency, allocations, memory, startup, and client bundle size before extending Effect to a critical path. Keep server dependencies out of browser imports and use an external persistence mechanism for work that must survive restarts. As checked on 2026-10-07, [Effect 4.0](https://effect.website/blog/releases/effect/40) is stable, with some modules still marked unstable or experimental; its v4 benchmarks compare Effect versions and do not establish superiority over plain TypeScript.
+Plain functions and `async`/`await` remain the default for simple page coordination. Compare equivalent implementations for p95/p99 latency, allocations, memory, startup, and client bundle size before extending Effect to a critical path. Keep server dependencies out of browser imports and use an external persistence mechanism for work that must survive restarts. [Effect 4](https://effect.website/blog/releases/effect/40) is stable, with some modules still marked unstable or experimental; its v4 benchmarks compare Effect versions and do not establish superiority over plain TypeScript.
 
 ### Browser delivery
 
@@ -200,7 +200,7 @@ Put AVIF first when it gives the better result. Generate width-based `srcset`/`s
 
 Prefer **[Sharp](https://sharp.pixelplumbing.com/)** for portable resizing and AVIF/WebP output; it also runs under Bun. For JPEG XL variants, use **[libjxl's `cjxl`](https://github.com/libjxl/libjxl/blob/main/doc/man/cjxl.txt)** in bounded build/upload jobs. Preserve originals and derive variants without repeated lossy re-encoding. Sharp's [JXL output](https://sharp.pixelplumbing.com/api-output/#jxl) is experimental and excluded from prebuilt binaries, so Sharp-backed integrations do not automatically provide production JXL encoding.
 
-**[Bun.Image](https://bun.com/docs/runtime/image)** can process supported images in Bun-hosted jobs or build tools without a separate addon. As checked on 2026-10-20, Bun's AVIF/HEIC support is unavailable on Linux and depends on OS codecs/hardware elsewhere; no JXL encoder is documented. Verify the actual processing target. Bun Image supplies transformation, while responsive markup and endpoint/cache behavior need their own integration. Vendor processing benchmarks do not establish better visual quality, compression, or browser performance.
+**[Bun.Image](https://bun.com/docs/runtime/image)** can process supported images in Bun-hosted jobs or build tools without a separate addon. Bun's AVIF/HEIC support is unavailable on Linux and depends on OS codecs/hardware elsewhere; no JXL encoder is documented. Verify the actual processing target. Bun Image supplies transformation, while responsive markup and endpoint/cache behavior need their own integration. Vendor processing benchmarks do not establish better visual quality, compression, or browser performance.
 
 Generate appropriate `srcset`/`sizes`, preserve aspect ratios and stable dimensions, and load the LCP image promptly. Bound source access, bytes/pixels, variant counts, and concurrency; isolate transformation capacity from latency-sensitive API work. Version source/transform cache keys and preserve private-file authorization for originals, variants, and caches. Compare equivalent visual quality, delivered bytes, cold/cache-hit latency, throughput, CPU/memory, and cost.
 
@@ -238,7 +238,7 @@ HTTP/3 is a transport choice at a particular connection, not a requirement of JS
 
 ### PostgreSQL
 
-**PostgreSQL 18** is a valid supported baseline as checked on 2026-09-15. Apply supported minor updates and check provider, extension, and backup-tool compatibility before a major upgrade. The [versioning policy](https://www.postgresql.org/support/versioning/) is the source for support dates. A guide can recommend a major version while applications pin the exact deployed release.
+**PostgreSQL 18** remains the established baseline. [PostgreSQL 19 is released](https://www.postgresql.org/about/news/postgresql-19-released-3449/). Select it when the provider, drivers, extensions, and backup/restore path support the target. Apply supported minor updates and exercise migration and recovery separately before changing majors. See the [versioning policy](https://www.postgresql.org/support/versioning/).
 
 Keep transactional truth in PostgreSQL. Design indexes from `EXPLAIN (ANALYZE, BUFFERS)` on representative data. Select columns explicitly, paginate by a stable indexed key, batch writes, and avoid N+1 queries. Use connection pooling and a least-privilege role. Keep transactions short and never hold one open while calling a network provider.
 
@@ -250,13 +250,13 @@ Use **SQLx** for explicit queries, migrations, and compile-time query checks whe
 
 For self-managed PostgreSQL, **[pgBackRest](https://pgbackrest.org/)** is the recommended backup/WAL tool; managed PostgreSQL can provide equivalent backup and PITR capabilities. An object store such as R2 can be a backup destination when the tool's S3 integration has been verified. Define retention, independent access credentials, recovery point objective (RPO), and recovery time objective (RTO). High availability and backups serve different failure modes.
 
-For disposable agent sandboxes, branch previews, and migration tests with frequent create/clone/discard cycles, consider **[PGX](https://github.com/pgrundev/pgx)**, the Rust database runtime at [pgx.dev](https://pgx.dev/). Its focus is provisioning density and low idle overhead, not universally faster SQL; copy-on-write clones require a supporting storage backend. Use sanitized fixtures, independent task URLs, and TTLs. Verify SQLx connections, migrations, and queries against its [compatibility gate](https://github.com/pgrundev/pgx/blob/main/docs/pgx/compatibility-gate.md), and retain real PostgreSQL integration and metadata checks. As checked on 2026-10-20, PGX is beta, not crash-safe, and cannot load existing PostgreSQL C extensions; one runtime shares a crash domain. Keep authoritative production state in PostgreSQL, pin a tested PGX release, and revisit its limits on upgrades.
+For disposable agent databases, branch previews, or repeated migration tests, consider [PGBoxDB](https://github.com/pgrundev/pgboxdb), formerly PGX. It targets fast provisioning and low idle overhead. Copy-on-write clones need a supporting filesystem. Use sanitized fixtures, task-specific URLs, and TTLs. Verify SQLx connections, migrations, queries, and offline metadata against its [compatibility gate](https://github.com/pgrundev/pgboxdb/blob/v0.2.0/docs/pgboxdb/compatibility-gate.md). The v0.2.0 tag targets PostgreSQL 18 compatibility. Keep authoritative data and production-semantics tests on PostgreSQL.
 
 ### Turso and embedded data
 
 **[Turso](https://docs.turso.tech/introduction)** is a performance-oriented database alternative when data can live inside its owning process, local reads dominate, synchronization is required, or tenants have independent databases. It can be the primary store for that deployment profile from launch. PostgreSQL remains the reference default for shared relational state, its extensions, and mature operations.
 
-Separate the older SQLite-derived **libSQL** engine, the newer Rust-based **Turso Database** engine, and the managed **Turso Cloud** service. The Rust engine supports MVCC with `BEGIN CONCURRENT`, and its [0.8 release](https://turso.tech/blog/turso-0.8.0) improves concurrent writes. Its workload-specific comparisons with SQLite do not select a winner against PostgreSQL. As checked on 2026-10-07, the [project FAQ](https://github.com/tursodatabase/turso#faq) reports production use while noting pre-1.0 status, compatibility gaps, and experimental features.
+Separate the older SQLite-derived **libSQL** engine, the newer Rust-based **Turso Database** engine, and the managed **Turso Cloud** service. The Rust engine supports MVCC with `BEGIN CONCURRENT`, and its [0.8 release](https://turso.tech/blog/turso-0.8.0) improves concurrent writes. Its workload-specific comparisons with SQLite do not select a winner against PostgreSQL. The [project FAQ](https://github.com/tursodatabase/turso#faq) reports production use while noting pre-1.0 status, compatibility gaps, and experimental features.
 
 Embedded queries eliminate a database network round trip and a separate database process for that access path. Remote HTTP access still crosses a network. Use a supported Rust SDK for the chosen engine/access mode and revise repository code, migrations, and query checks. SQLx's PostgreSQL integration does not establish Turso support, and Turso's experimental PostgreSQL frontend does not establish equivalent PostgreSQL behavior. Cap blocking work, connection/task concurrency, and buffers according to the SDK's execution model. Embedded files need suitable storage, backup, and failover ownership; stateless replicas do not automatically share them.
 
@@ -413,7 +413,7 @@ Use **Wasmtime** for a controlled WebAssembly runtime in a service or plugin bou
 
 #### Build acceleration
 
-**[rustd](https://github.com/DioxusLabs/rustd)** is an experimental local option for repeated Rust rebuilds. Recheck current status/platform support before adoption or upgrades, pin its release and exact supported Rust toolchain with `rust-src`, and use explicit `cargo rustd build` / `cargo rustd run` commands. As checked on 2026-10-20, its daemon builds lack borrow checking and have known correctness gaps: run a real rustc-backed check before executing changed daemon-built code, and retain standard Cargo/rustc checks, Clippy, tests, and release builds in `verify`/CI. Bypass configured rustd wrappers for those checks; [Cargo documents](https://doc.rust-lang.org/cargo/reference/environment-variables.html) clearing the workspace wrapper with `RUSTC_WORKSPACE_WRAPPER=`, for example `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` on POSIX hosts. Keep verification artifacts separate where needed.
+**[rustd](https://github.com/DioxusLabs/rustd)** is an experimental local option for repeated Rust rebuilds. Recheck current status/platform support before adoption or upgrades, pin its release and exact supported Rust toolchain with `rust-src`, and use explicit `cargo rustd build` / `cargo rustd run` commands. The current upstream instructions use Rust 1.99.0 with `rust-src`. Daemon builds still lack borrow checking, so run a rustc-backed check before executing changed daemon-built code, and retain standard Cargo/rustc checks, Clippy, tests, and release builds in `verify`/CI. Bypass configured rustd wrappers for those checks; [Cargo documents](https://doc.rust-lang.org/cargo/reference/environment-variables.html) clearing the workspace wrapper with `RUSTC_WORKSPACE_WRAPPER=`, for example `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` on POSIX hosts. Keep verification artifacts separate where needed.
 
 Compare warm rebuild time, startup, memory, and cache cost on the application. Use ordinary Cargo when daemon compatibility or correctness fails, and revisit limitations against the selected release rather than anticipated fixes. Bound resources and preserve other projects' shared daemon/configuration; global wrapper setup is a separate workflow choice.
 
@@ -445,7 +445,7 @@ Adopt ClickHouse for analytical scans, DuckDB for embedded/batch analytics, Redp
 
 | Problem | Default | Scale or specialist path |
 | --- | --- | --- |
-| Frontend | SolidStart 2 + Bun + Vite/Rolldown | Astro islands; Solid + Vite for client-only pages; Marko for resumability; Leptos for Rust UI; templates + HTMX for HTML-driven interaction |
+| Frontend | SolidStart 2 + Solid 1 + Bun + Vite/Rolldown | Astro islands; Solid 2 + Vite for compatible client-only pages; Marko for resumability; Leptos for Rust UI; templates + HTMX for HTML-driven interaction |
 | Bun-side orchestration | Direct calls and `async`/`await` for simple page coordination | Effect for typed failures, resource scopes, and controlled concurrency |
 | Backend | Rust + Axum + Tokio + Tower | Modular services; gRPC/Tonic when the contract requires it |
 | Database | PostgreSQL 18 | Read replicas; Turso for embedded or tenant-owned data; ScyllaDB for a different partition model |

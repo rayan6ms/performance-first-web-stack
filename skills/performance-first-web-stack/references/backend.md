@@ -32,6 +32,8 @@ Use Effect conditionally for substantial Bun page-data coordination, streaming, 
 
 Use compatible Bun integration; model failures/dependencies, reuse services, scope request-owned tasks, bound concurrency, and propagate supported cancellation. Map errors to the contract; fibers/retries are not restart-durable. Check module stability, exclude server dependencies from browser bundles, and compare equivalent tail latency, allocations, memory, and startup before expanding adoption.
 
+Choose the OpenAPI version supported by the generator, validator, and client toolchain. Current `utoipa` and `openapi-typescript` document OpenAPI 3.1 support. Verify the full pipeline before using 3.2 features. See [utoipa](https://docs.rs/utoipa/latest/utoipa/) and [openapi-typescript](https://openapi-ts.dev/introduction).
+
 ## Official documentation
 
 Use documentation matching the installed version.

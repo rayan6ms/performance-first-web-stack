@@ -23,6 +23,8 @@ Recommend [Leptos](https://book.leptos.dev/ssr/index.html) when Rust throughout 
 
 ## HTMX: Rust-rendered pages and fragments
 
+Choose a patched major deliberately. HTMX 4 is released and published under exact `htmx.org` versions, while the unqualified npm `latest` tag and main documentation still point to 2.x. Follow the [HTMX 4 migration guide](https://four.htmx.org/docs/#migrating-from-htmx-2x-to-4x) for explicit inheritance, default error-response swaps, server-based history restoration, and changed events/extensions. Test these behaviors before upgrading an existing application.
+
 Recommend [HTMX](https://htmx.org/docs/) with Axum and an escaping server-template renderer for forms, search, pagination, and similar server-owned interactions. Rust can serve pages, fragments, and domain operations together. Keep SolidStart for extensive local/offline interaction when its client model better fits.
 
 - Use HTML responses for UI updates and direct Rust domain calls behind the handlers; add no Bun tier or JSON proxy solely for this profile. Keep JSON/OpenAPI for public/polyglot clients. Preserve full-page URLs and native form actions/methods where possible, with the same validation and resource authorization on every endpoint. `HX-*` headers are request hints, never identity.

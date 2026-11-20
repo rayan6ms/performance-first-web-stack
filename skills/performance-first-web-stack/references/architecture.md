@@ -8,18 +8,20 @@ For architecture choices, establish rendering/critical paths, representative loa
 
 Static content without server features needs no API, database, queue, or SSR process. Add capabilities when requirements need them, including at launch.
 
+Astro 7 defaults to Vite 8 and the Sätteri Markdown pipeline. When upgrading, verify rendered Markdown/MDX and any remark/rehype plugins. Astro documents `@astrojs/markdown-remark` for projects retaining that pipeline. See the [Astro 7 upgrade guide](https://docs.astro.build/en/guides/upgrade-to/v7/).
+
 ## Technology selection rules
 
 | Concern | Default | Conditional alternative |
 | --- | --- | --- |
-| Interactive web | SolidJS + SolidStart | Astro + Solid islands for content; Solid + Vite for client-only rendering; [Marko for streaming/resumability, Leptos for Rust UI, or server templates + HTMX for HTML-driven interactions](rendering-profiles.md) |
+| Interactive web | SolidStart 2 + compatible Solid 1 | Astro + compatible Solid islands for content; Solid 2 + Vite for client-only rendering when its ecosystem fits; [Marko for streaming/resumability, Leptos for Rust UI, or server templates + HTMX for HTML-driven interactions](rendering-profiles.md) |
 | Static content | Astro with pre-rendering | Existing suitable static pipeline |
 | JavaScript runtime | Bun tooling and regional SSR | Verified compatible Workers target; Node.js only for a verified dependency/host requirement Bun cannot satisfy |
 | Package management | Bun | pnpm when Bun is unsuitable; npm only when both are unsuitable |
 | Frontend build | Framework-supported Vite/Rolldown integration | Supported alternative for compatibility/workload needs |
 | Frontend lint/format | Oxlint + Oxfmt | Supplementary rules/tooling where required; retain a separate TypeScript check |
 | Shared styling system | StyleX with compile-time extraction | CSS Modules/native CSS when a shared atomic/token system is unnecessary |
-| Accessible UI primitives | Kobalte | Ark UI's Solid implementation or an existing suitable Solid design system |
+| Accessible UI primitives | Kobalte on Solid 1 | Ark UI or an existing design system with verified support for the selected Solid major |
 | Local interaction state | Solid signals/stores | A measured additional state/caching requirement |
 | Browser validation | Valibot | An existing suitable schema boundary; Rust remains authoritative |
 | Backend | Rust + Axum + Tokio + Tower, with supported Hyper | Native alternative for explicit constraints or reproducible equivalent-service evidence |
@@ -39,6 +41,12 @@ Use one authoritative contract/transaction model per boundary. Additional servic
 For selected Marko, Leptos, or HTMX, read the relevant [rendering profile](rendering-profiles.md). It overrides overlapping Solid UI/tooling choices while preserving Rust domain ownership. Leptos/Axum or Axum templates/HTMX can render directly in Rust without a separate Bun process; calls within that service need no HTTP loopback.
 
 SolidStart 2 uses `vite.config.ts` and Vite's Environment API; do not copy v1 Vinxi/`app.config.ts` adapters into a v2 setup. Choose one deployment plugin and follow its documented order/environment mapping. With Nitro v3, use `solidStart(), nitro()` and the top-level `nitro` configuration, including the Bun preset. Verify the selected release's Vite peer range. Upstream documents Node 24+ as its supported baseline; Bun execution needs verification of development, build, and the production artifact rather than assuming Bun is covered by that support statement.
+
+## Solid major and integration compatibility
+
+Solid 2 is stable and independently versioned from SolidStart. SolidStart 2.2.3 requires `solid-js@^1.9.15` and a router below 2.0. Keep Solid 1, router 1, `@solidjs/meta` 0.29 if adding it directly, and `vite-plugin-solid` 2 for that setup. Astro's `@astrojs/solid-js` 7.1.x also requires Solid 1. Check current peers before selecting or changing versions.
+
+For a new client-only project whose dependencies support Solid 2, use matching `solid-js` and `@solidjs/web`, plus `@solidjs/vite-plugin` and a compatible router if needed. Web imports and JSX types come from `@solidjs/web`, and stores come from `solid-js`. Check component, test, and image integrations for removed import paths as well as peer ranges. Migration also changes setter timing, effect phases, and async state, so test runtime behavior and any SSR/hydration before switching. See the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1).
 
 ## Short request paths and rendering
 
