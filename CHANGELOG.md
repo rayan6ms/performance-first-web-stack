@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.19 — 2026-11-25
+
+- Document Solid 2 `@solidjs/vite-plugin` Start mode as Solid's forward SSR path alongside SolidStart 2 (Solid 1 maintenance bridge), and update retired SolidStart docs URLs.
+- Default frontend styling to Tailwind CSS v4 or CSS Modules/native CSS, keeping StyleX conditional for strict multi-app token design systems.
+- Add `oxlint --type-aware` (`oxlint-tsgolint`/`tsrs`), daily Rust build/test accelerators (`cargo-nextest`, `mold`/`lld`, `sccache`, `cargo-chef`), Bun supply-chain hardening (`trustedDependencies`, `minimumReleaseAge`), OpenTelemetry eBPF Instrumentation (OBI), `@hey-api/openapi-ts`/`aide`, HTMX 4, SQLx 0.9/Leptos 0.9 notes, and AI prompt-injection/cost bounds.
+- Fix provider-specific global companion isolation (`pi` vs. `codex`), add `antigravity-cli` Impeccable mapping, support `--agent=`/`--project=` in companion CLI, harden Windows/PATH/target checks, and polish CLI/picker output.
+
 ## 0.1.18 — 2026-11-20
 
 - Document Solid 2 as a client-only option where dependencies support it and keep SolidStart 2 on Solid 1.

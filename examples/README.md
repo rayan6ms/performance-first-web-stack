@@ -8,3 +8,5 @@ Small projects created with the stack and kickoff skill. Each README explains ho
 | [FieldStock](05-fieldstock/README.md) | A SolidStart app shell with a Rust health API and generated OpenAPI client |
 
 Copy a project into a new directory and follow its README. FieldStock's API requires Rust.
+
+> These examples are preserved assessment snapshots from the initial v0.1.0 trial (with documented portability and accessibility fixes), so their pinned dependencies and starter configs predate newer releases. For a new website using the latest stack guidance, run the `performance-first-web-stack-kickoff` skill instead of copying an example.

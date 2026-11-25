@@ -17,7 +17,7 @@ Select these options when requirements/workloads justify their operating/resourc
 | Meilisearch / Algolia | Typo-tolerant or managed product search | Relevance tests, freshness, deletion propagation, provider/index recovery |
 | OpenSearch | Distributed search/aggregations | Shard/capacity model, memory, synchronization, relevance, operating owner |
 | Redpanda / Kafka | Partitioned durable streams and replay | Partition/key ordering, consumer capacity, retention, failure/rebalance behavior |
-| Cilium / Pixie | Required Kubernetes networking/policy/telemetry | Cluster/runtime compatibility, privileges, overhead, failure and rollback model |
+| Cilium / OpenTelemetry eBPF (OBI) / Pixie | Required Kubernetes networking, policy, or zero-code eBPF telemetry (prefer OBI/Beyla for native OTLP) | Cluster/runtime compatibility, privileges, overhead, failure and rollback model |
 | Envoy | Fine-grained origin/service traffic policy | Equivalent routing/load tests, retry budget, timeout/mTLS policy, operational ownership |
 | Wasmtime / Spin | Sandboxed portable compute or plugin components | Allowed capabilities, resource/time limits, host interface, target support, measured overhead |
 | Bazel + EngFlow / BuildBarn | Large polyglot build graph or valuable remote execution/cache | Cache hit rate, artifact/toolchain correctness, credentials, cost, end-to-end developer wait |

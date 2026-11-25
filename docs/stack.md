@@ -45,7 +45,7 @@ Browser / API client
   ▼
 CDN / WAF / load balancing
   ├── cached HTML, scripts, styles, images
-  ├── dynamic pages ── SolidStart SSR on Bun ─┐
+  ├── dynamic pages ── Solid SSR on Bun ─────┐
   └── /api/* ───────────────────────────────┤
                                           ▼
                                Rust API: Axum + Tokio + Tower
@@ -63,14 +63,14 @@ Cloudflare Load Balancing is the recommended managed option for health-based rou
 
 | Layer | Default | Why | Add or replace when |
 | --- | --- | --- | --- |
-| Interactive UI | SolidStart 2 + compatible Solid 1 | Fine-grained updates, SSR, streaming, and route-level loading | Astro for content; Solid 2 + Vite for compatible client-only pages; Marko, Leptos, or HTMX under the rendering profiles below |
+| Interactive UI | Solid 2 (`@solidjs/vite-plugin` Start mode) or SolidStart 2 + Solid 1 | Fine-grained updates, SSR, streaming, and route-level loading | Choose Solid 2 Start mode when dependencies support Solid 2; keep SolidStart 2 + Solid 1 for Solid 1 libraries; Astro for content; Marko, Leptos, or HTMX under the rendering profiles below |
 | Static/content delivery | Astro with islands | Sends little JavaScript and supports pre-rendering | The page is an interactive application rather than content |
-| Frontend tooling | Vite with its supported Rolldown integration, TypeScript, Oxlint + Oxfmt | Fast builds, linting, and formatting | A required plugin needs a supplementary tool |
+| Frontend tooling | Vite with its supported Rolldown integration, TypeScript, Oxlint (`--type-aware`) + Oxfmt | Fast builds, type-aware linting, and formatting | A required plugin needs a supplementary tool |
 | JavaScript runtime | Bun for tooling and the regional SSR server | One runtime for compatible local tools and server execution | Workers is an alternative edge deployment target with a different runtime |
 | Package manager | Bun | Installs, workspaces, and scripts integrated with the chosen runtime | pnpm when its workspace or dependency behavior better fits the repository |
-| Styling | StyleX for a shared token-based design system | Build-time atomic CSS generation and explicit composition | CSS Modules/native CSS for simpler styling requirements |
+| Styling | Tailwind CSS v4 (`@tailwindcss/vite`) or CSS Modules / native CSS | Build-time atomic or scoped CSS with zero runtime JS and minimal Vite friction | StyleX when a strict multi-app typed token design system justifies its compiler setup |
 | API | Rust + Axum + Tokio + Tower, on Hyper | Native execution, memory safety, explicit concurrency and middleware | Compare other native frameworks only against a reproducible service benchmark |
-| Public contract | OpenAPI generated from the API; `utoipa` is one Rust option | Language-neutral clients and reviewable compatibility | Internal same-language calls can use a typed Rust module or a private RPC protocol |
+| Public contract | OpenAPI generated from the API (`utoipa` or `aide` in Rust) | Language-neutral clients and reviewable compatibility | Internal same-language calls can use a typed Rust module or a private RPC protocol |
 | Database | PostgreSQL 18, with current supported patches | Transactions, indexes, extensions, mature tooling | Turso for embedded data or independent tenant databases; provider/extension constraints or a different data model |
 | Rust database access | SQLx with reviewed SQL and compile-time checks | Avoids a large runtime ORM and keeps query plans visible | Use an ORM only when its productivity benefit is worth the abstraction |
 | Cache | HTTP/CDN cache first; Valkey second | Avoids a network hop and keeps correctness in the database | A cache is justified by a measured hot read or coordination need |
@@ -85,11 +85,11 @@ Agents find or install relevant companions on demand using the [skill catalog](.
 
 ### Solid and SolidStart
 
-Solid 2 is stable. SolidStart 2.2.3 still requires Solid 1.9 and a router below 2.0, so keep the compatible Solid 1 stack for SSR. Astro's Solid adapter also requires Solid 1 on its current release line. For new client-only work, consider Solid 2 with `@solidjs/web` and `@solidjs/vite-plugin` when the project's component and test tooling supports it. Solid 2 changes JSX imports, stores, effect phases, and when writes become visible. Use the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1) for upgrades.
+Solid 2 is stable and moves SSR, server functions (`"use server"`), and app orchestration directly into **`@solidjs/vite-plugin` v3+ Start mode** (`solid({ start: true, ssr: true, serverFunctions: true })`). Standalone **SolidStart 2.x** (`2.2.3`) is effectively in maintenance mode for **Solid 1.9** (and a router below 2.0). Prefer Solid 2 with `@solidjs/web` and `@solidjs/vite-plugin` Start mode when the project's UI, router, and test dependencies support Solid 2; keep SolidStart 2 + Solid 1 as the compatibility path when Solid 1 libraries (`@kobalte/core`, `@astrojs/solid-js`, `@unpic/solid`) are required. Solid 2 changes JSX imports, stores, effect phases, and when writes become visible; use the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1) for upgrades rather than attempting an in-place SolidStart swap.
 
-Use v2's `vite.config.ts` and one deployment plugin, following its order and environment mapping. V1 Vinxi/`app.config.ts` examples use a different build model. The current v2 release accepts Vite 8 or 9 and documents Node 24+ as its supported baseline; verify development, build, and production execution separately when using Bun.
+For SolidStart 2 on Solid 1, use v2's `vite.config.ts` and one deployment plugin, following its order and environment mapping (v1 Vinxi/`app.config.ts` examples use a different build model). It accepts Vite 8 or 9 and documents Node 24+ as its supported baseline; verify development, build, and production execution separately when using Bun.
 
-Prerender public routes where possible, stream expensive dynamic sections, and hydrate only what the selected rendering strategy supports. Solid's fine-grained reactivity reduces update work; it does not automatically make every SolidStart page an islands architecture. For content with isolated interactive widgets, Astro + Solid islands is the recommended alternative.
+Prerender public routes where possible, stream expensive dynamic sections, and hydrate only what the selected rendering strategy supports. Solid's fine-grained reactivity reduces update work; it does not automatically make every Solid SSR page an islands architecture. For content with isolated interactive widgets, Astro + Solid islands is the recommended alternative.
 
 ### Alternative rendering profiles
 
@@ -97,13 +97,13 @@ Prerender public routes where possible, stream expensive dynamic sections, and h
 
 **[Leptos](https://book.leptos.dev/ssr/index.html)** is a Rust UI alternative with supported Axum SSR, streaming, server functions, and optional islands. It can render pages and call Rust domain code in one service, replacing a separate JavaScript SSR tier. Interactive code ships as WASM with JavaScript glue; measure release bytes, startup, and hydration rather than assuming Rust makes the browser faster. Pin compatible releases, check native SSR and WASM builds separately, and authorize every server function. Retain OpenAPI for public/polyglot consumers.
 
-**[HTMX](https://htmx.org/docs/)** with Axum and escaping server templates is recommended for forms, search, pagination, and partial updates where server-owned HTML fits. Rust can serve pages, fragments, and domain operations directly. Preserve full-page navigation and native forms where possible; verify validation, focus, history, CSRF protection, and full-page versus fragment caching. Account for network round trips and server load; offline-heavy and highly local interaction may favor a client framework.
+**[HTMX](https://htmx.org/docs/)** with Axum and escaping server templates is recommended for forms, search, pagination, and partial updates where server-owned HTML fits. Choose a patched major deliberately: HTMX 4 is released under exact `htmx.org` versions (with explicit inheritance, default error-response swaps, and server-based history restoration), while npm `latest` still points to 2.x; follow the [HTMX 4 migration guide](https://four.htmx.org/docs/#migrating-from-htmx-2x-to-4x) when upgrading. Rust can serve pages, fragments, and domain operations directly. Preserve full-page navigation and native forms where possible; verify validation, focus, history, CSRF protection, and full-page versus fragment caching. Account for network round trips and server load; offline-heavy and highly local interaction may favor a client framework.
 
-SolidStart remains the general interactive default. A selected rendering profile determines its own UI/state/tooling libraries, while sharing accessibility, data ownership, and measurement requirements. It does not require installing the other profiles.
+Solid (Solid 2 Start mode or SolidStart 2 on Solid 1) remains the general interactive default. A selected rendering profile determines its own UI/state/tooling libraries, while sharing accessibility, data ownership, and measurement requirements. It does not require installing the other profiles.
 
 ### Bun, package management, and deployment
 
-Use **Bun** for required JavaScript dependencies, compatible scripts, tests targeting Bun, and a selected JavaScript SSR tier. For SolidStart, use its [deployment plugin](https://docs.solidjs.com/solid-start/v2/guides/deployment-plugins) with [Nitro's Bun preset](https://nitro.build/deploy/runtimes/bun) and test the actual production output. Keep application business logic in Rust; a JavaScript server renders pages and coordinates page data when the chosen profile needs one.
+Use **Bun** for required JavaScript dependencies, compatible scripts, tests targeting Bun, and a selected JavaScript SSR tier. For Solid SSR, follow the [Solid deployment guide](https://docs.solidjs.com/building-apps/deployment/) (or [SolidStart 2](https://github.com/solidjs/solid-start) with [Nitro's Bun preset](https://nitro.build/deploy/runtimes/bun) on Solid 1) and test the actual production output. Keep application business logic in Rust; a JavaScript server renders pages and coordinates page data when the chosen profile needs one.
 
 **pnpm is a package manager**, so it can replace Bun's install/workspace tooling while Bun remains the runtime. Some pnpm distributions run without a separate Node installation; that does not change the runtime requirements of tools and application scripts they launch. Pin one package manager and lockfile per workspace.
 
@@ -119,7 +119,7 @@ bun run --bun build
 bun run ./.output/server/index.mjs
 ```
 
-Create and commit the lockfile before using the frozen install command. Bun's [`--bun` option](https://bun.sh/docs/runtime) matters because executable scripts may otherwise honor a Node shebang. It selects the runtime; it cannot make an incompatible plugin work. Benchmark install/build times separately from SSR latency, startup time, and resident memory.
+Create and commit the lockfile before using the frozen install command. Bun's [`--bun` option](https://bun.com/docs/runtime) matters because executable scripts may otherwise honor a Node shebang. It selects the runtime; it cannot make an incompatible plugin work. Benchmark install/build times separately from SSR latency, startup time, and resident memory.
 
 ### Native Bun capabilities
 
@@ -133,7 +133,7 @@ Bun-native APIs require Bun execution and are unavailable in browser code, Worke
 
 ### Vite, Rolldown, and Oxc
 
-Use the Vite version supported by SolidStart and its deployment plugin. Current [Vite documentation](https://vite.dev/guide/) describes Rolldown as its production bundler; a separate manual bundler swap is unnecessary for that release line. Oxlint and Oxfmt handle linting and formatting. Keep a TypeScript type-check in CI because transpilation alone does not check types.
+Use the Vite version supported by the chosen Solid integration and deployment plugin. Current [Vite documentation](https://vite.dev/guide/) describes Rolldown as its production bundler; a separate manual bundler swap is unnecessary for that release line. Oxlint and Oxfmt handle linting and formatting. Enable `oxlint --type-aware` with stable `oxlint-tsgolint` (or the `tsrs` backend when compatible) for type-aware rules such as floating promises; `oxlint --type-aware --type-check` can also surface compiler diagnostics alongside lint rules. Keep a project-wide TypeScript type-check in CI because transpilation and plain linting do not check types.
 
 For new compatible projects, prefer built-in **[Bun type checking](https://bun.com/docs/runtime/check)** with a pinned supporting release, using a script such as `bun check --no-script -p tsconfig.json`. Match its bundled TypeScript baseline to the framework, configuration, and editor; use `-b` where all referenced projects need checking. Compare coverage, diagnostics, and failure exits with supported official TypeScript before switching, retaining the existing checker until compatibility is established. Keep framework checks such as `astro check` and required declaration/code-generation tooling; Bun check emits neither declarations nor incremental build info.
 
@@ -141,12 +141,12 @@ For new compatible projects, prefer built-in **[Bun type checking](https://bun.c
 
 ### Styling and UI
 
-**StyleX** remains recommended for a reusable design system: atomic CSS extraction, token/theme variables, deterministic composition, and colocated styles are useful at scale. Its [compiler setup](https://stylexjs.com/docs/learn/installation/) moves style generation to build time. Dynamic values and style composition can still require runtime work, so compare the emitted CSS, JavaScript, and rendering cost instead of assuming zero overhead.
+Start with **Tailwind CSS v4** (`@tailwindcss/vite`, Rust/LightningCSS-powered build-time atomic CSS with zero runtime JavaScript) or **CSS Modules / native CSS** for most applications. Both integrate cleanly with Vite and Solid SSR without extra compiler ordering constraints.
 
-StyleX is not restricted to React: its [`stylex.attrs` API](https://stylexjs.com/docs/api/javascript/attrs/) explicitly covers frameworks including Solid. Validate the chosen compiler integration with SolidStart's SSR, lazy routes, hydration, themes, and production CSS extraction. CSS Modules or native CSS remain strong alternatives when a shared atomic styling system brings little benefit.
+**StyleX** is a conditional alternative when a large or multi-app design system needs strict statically typed tokens, deterministic atomic composition, and colocated styles. Its [compiler setup](https://stylexjs.com/docs/learn/installation/) moves style generation to build time, and its [`stylex.attrs` API](https://stylexjs.com/docs/api/javascript/attrs/) covers frameworks including Solid. Dynamic values and style composition can still require runtime work, so compare emitted CSS, JavaScript, and rendering cost instead of assuming zero overhead. When using `@stylexjs/unplugin` with Solid and Vite, place it before the Solid plugin, verify plain-`.ts` theme variable files are transformed, validate SSR/lazy routes/hydration, and guard against its Vitest `configureServer` keep-alive quirk.
 
 ```text
-Design tokens → StyleX theme variables → UI primitives → product components
+Design tokens → CSS custom properties / Tailwind theme (or StyleX vars) → UI primitives → product components
 ```
 
 For Solid 1, use **Kobalte** or **Ark UI** for accessible primitives. Check actual Solid 2 support before carrying either library into a Solid 2 project. The current UI SDK Solid adapter requires Solid 2, while the current Unpic Solid adapter requires Solid 1. Build one product design system on compatible primitives and verify keyboard navigation, focus management, and reduced-motion behavior.
@@ -155,7 +155,7 @@ For Solid 1, use **Kobalte** or **Ark UI** for accessible primitives. Check actu
 
 Prefer route/server data for persistent state, Solid signals for local interaction, and Solid stores for related structured state. Add a remote-data cache when the product needs refetching, optimistic updates, or offline behavior; avoid mirroring every response in another global store.
 
-Use native forms and SolidStart actions where appropriate, with **Valibot** for modular client-side validation. Enforce validation and authorization in Rust regardless of browser checks. Generated OpenAPI TypeScript types do not perform runtime validation. Keep one documented wire format for dates, identifiers, decimal amounts, and errors across the two languages.
+Use native forms and Solid server functions/actions where appropriate, with **Valibot** for modular client-side validation. Enforce validation and authorization in Rust regardless of browser checks. Generated OpenAPI TypeScript types do not perform runtime validation. Keep one documented wire format for dates, identifiers, decimal amounts, and errors across the two languages.
 
 ### Effect for Bun-side orchestration
 
@@ -228,7 +228,7 @@ Use Tower middleware for request IDs, deadlines, body limits, compression, rate 
 
 Bound spawned tasks, connection pools, and buffers. Use a bounded blocking pool or dedicated compute workers for CPU-intensive work; consider Rayon for appropriate parallel CPU workloads. Profile allocations, serialization, and lock contention before changing allocators or using unsafe optimizations. Release builds, realistic concurrency, and equivalent middleware are required for a useful comparison.
 
-Publish OpenAPI for public, mobile, polyglot, or separate TypeScript web clients, using `utoipa` or a reviewed specification. Generate TypeScript types with [openapi-typescript](https://openapi-ts.dev/) and use `openapi-fetch` or another generated client where applicable. Leptos server functions and HTML fragment handlers can serve first-party UI without a duplicate JSON API. oRPC's TypeScript inference does not cross a Rust boundary automatically. It can remain in a separate TypeScript service, but adding that service solely to wrap Rust creates another hop and contract to maintain.
+Publish OpenAPI for public, mobile, polyglot, or separate TypeScript web clients, using `utoipa`, `aide`, or a reviewed specification. Generate TypeScript types with [openapi-typescript](https://openapi-ts.dev/) and `openapi-fetch`, or consider `@hey-api/openapi-ts` when generating Valibot/Zod runtime validators alongside client types. Leptos server functions and HTML fragment handlers can serve first-party UI without a duplicate JSON API. oRPC's TypeScript inference does not cross a Rust boundary automatically. It can remain in a separate TypeScript service, but adding that service solely to wrap Rust creates another hop and contract to maintain.
 
 For internal Rust services, begin with HTTP and OpenAPI. Add gRPC with Tonic and Protobuf when streaming, strict service contracts, or language-neutral internal RPC justify the operational cost. Avoid a service mesh until service count and failure modes warrant one.
 
@@ -324,7 +324,7 @@ Bazel              large/polyglot build graph and remote cache
 Turborepo          JavaScript package task graph
 ```
 
-Useful platform tools include GitHub Actions, Release Please, Renovate, Just, direnv, SOPS with age, Trivy, `cargo-audit`, and `cargo-deny`. Use GitHub Actions for checks and release automation; keep credentials in the CI secret store and deploy with short-lived identity where the provider supports it. Treat remote build execution as an optimization with a measured cache hit rate, not a prerequisite for a fast local loop.
+Useful platform tools include GitHub Actions, Release Please, Renovate, Just, direnv, SOPS with age, Trivy, `cargo-audit`, `cargo-deny`, `cargo-nextest`, `sccache`, fast linkers (`mold`/`lld`), and `cargo-chef` for container builds. For JS/TS supply-chain hygiene under Bun, keep default-deny lifecycle scripts (`trustedDependencies` only for reviewed packages), configure a release cooldown (`minimumReleaseAge` in `bunfig.toml`), commit `bun.lock` with `--frozen-lockfile`, and run `bun audit`. Use GitHub Actions for checks and release automation; keep credentials in the CI secret store and deploy with short-lived identity where the provider supports it. Treat remote build execution as an optimization with a measured cache hit rate, not a prerequisite for a fast local loop.
 
 Measure checkout, installation, Rust/frontend compilation, test setup/execution, and cache-transfer time before tuning CI. Bound combined worker pools and use affected-task selection only when the graph covers Rust and generated contracts as well as JavaScript. See the [CI guidance](../skills/performance-first-web-stack/references/tooling.md#build-and-ci-performance) for cache correctness, Git history, test isolation, runner choices, and optional hooks.
 
@@ -389,7 +389,7 @@ These are supported options in the architecture, not a second mandatory baseline
 
 #### Networking and eBPF
 
-Use **Cilium** when Kubernetes networking, network policy, or eBPF-based observability is a demonstrated need. **Pixie** can provide high-level Kubernetes telemetry without application changes. **Envoy** is useful for advanced load balancing, retries, mTLS, and traffic policy. These add agents, memory, configuration, and failure modes; measure their value before deployment.
+Use **Cilium** when Kubernetes networking, network policy, or eBPF-based observability is a demonstrated need. For zero-code eBPF application telemetry, prefer **[OpenTelemetry eBPF Instrumentation (OBI)](https://opentelemetry.io/docs/zero-code/obi/)** (v1.0.0 stable, formerly Grafana Beyla), which emits native OTLP metrics and traces straight into your OpenTelemetry pipeline; **Pixie** remains an alternative when in-cluster PxL inspection is preferred. **Envoy** is useful for advanced load balancing, retries, mTLS, and traffic policy. These add agents, memory, configuration, and failure modes; measure their value before deployment.
 
 #### Analytics and data workloads
 
@@ -413,6 +413,12 @@ Use **Wasmtime** for a controlled WebAssembly runtime in a service or plugin bou
 
 #### Build acceleration
 
+Start with proven, borrow-checker-preserving Rust accelerators before experimental toolchains:
+
+- **`cargo-nextest`:** runs Rust tests in parallel isolated processes with clearer failure output, retries, and JUnit reporting; prefer it over `cargo test` for iterative and CI loops (retaining `cargo test --doc` for doctests).
+- **Fast linkers (`mold` on Linux, `lld` elsewhere) and `sccache`:** reduce debug/test link and recompile times without altering compiler semantics or skipping checks.
+- **`cargo-chef`:** separates dependency compilation from source layers in Docker/Podman builds so unchanged dependencies stay cached.
+
 **[rustd](https://github.com/DioxusLabs/rustd)** is an experimental local option for repeated Rust rebuilds. Recheck current status/platform support before adoption or upgrades, pin its release and exact supported Rust toolchain with `rust-src`, and use explicit `cargo rustd build` / `cargo rustd run` commands. The current upstream instructions use Rust 1.99.0 with `rust-src`. Daemon builds still lack borrow checking, so run a rustc-backed check before executing changed daemon-built code, and retain standard Cargo/rustc checks, Clippy, tests, and release builds in `verify`/CI. Bypass configured rustd wrappers for those checks; [Cargo documents](https://doc.rust-lang.org/cargo/reference/environment-variables.html) clearing the workspace wrapper with `RUSTC_WORKSPACE_WRAPPER=`, for example `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` on POSIX hosts. Keep verification artifacts separate where needed.
 
 Compare warm rebuild time, startup, memory, and cache cost on the application. Use ordinary Cargo when daemon compatibility or correctness fails, and revisit limitations against the selected release rather than anticipated fixes. Bound resources and preserve other projects' shared daemon/configuration; global wrapper setup is a separate workflow choice.
@@ -427,7 +433,7 @@ Use profiles and flamegraphs before changing allocators, introducing `unsafe`, o
 
 ### Stage 1: small production
 
-One Rust service, a SolidStart/Bun or Marko web process when the selected rendering profile needs it, one PostgreSQL primary (or the Turso profile when data ownership fits), object storage, CDN/WAF, and a managed deployment. Leptos or templates/HTMX can render within the Rust service. Add OpenTelemetry, backups, restore testing, deadlines, and a basic load test before adding more components. Database recovery controls must match the chosen engine and deployment mode.
+One Rust service, a Solid/Bun or Marko web process when the selected rendering profile needs it, one PostgreSQL primary (or the Turso profile when data ownership fits), object storage, CDN/WAF, and a managed deployment. Leptos or templates/HTMX can render within the Rust service. Add OpenTelemetry, backups, restore testing, deadlines, and a basic load test before adding more components. Database recovery controls must match the chosen engine and deployment mode.
 
 ### Stage 2: measured pressure
 
@@ -445,7 +451,7 @@ Adopt ClickHouse for analytical scans, DuckDB for embedded/batch analytics, Redp
 
 | Problem | Default | Scale or specialist path |
 | --- | --- | --- |
-| Frontend | SolidStart 2 + Solid 1 + Bun + Vite/Rolldown | Astro islands; Solid 2 + Vite for compatible client-only pages; Marko for resumability; Leptos for Rust UI; templates + HTMX for HTML-driven interaction |
+| Frontend | Solid 2 (`@solidjs/vite-plugin` Start mode) or SolidStart 2 + Solid 1, with Bun + Vite/Rolldown | Astro islands; Marko for resumability; Leptos for Rust UI; templates + HTMX for HTML-driven interaction |
 | Bun-side orchestration | Direct calls and `async`/`await` for simple page coordination | Effect for typed failures, resource scopes, and controlled concurrency |
 | Backend | Rust + Axum + Tokio + Tower | Modular services; gRPC/Tonic when the contract requires it |
 | Database | PostgreSQL 18 | Read replicas; Turso for embedded or tenant-owned data; ScyllaDB for a different partition model |
@@ -468,7 +474,8 @@ For material departures, record the requirement or expected improvement, alterna
 
 ## Further reading
 
-- [SolidStart v2](https://docs.solidjs.com/solid-start/v2)
+- [Solid rendering and SSR](https://docs.solidjs.com/concepts/rendering-and-ssr/) and [deployment](https://docs.solidjs.com/building-apps/deployment/)
+- [Migrating from SolidStart to Solid 2](https://docs.solidjs.com/migration/from-solid-start/) and [SolidStart repository](https://github.com/solidjs/solid-start)
 - [Axum](https://docs.rs/axum/latest/axum/)
 - [Tokio](https://tokio.rs/)
 - [SQLx](https://github.com/launchbadge/sqlx)

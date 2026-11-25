@@ -14,19 +14,19 @@ Astro 7 defaults to Vite 8 and the Sätteri Markdown pipeline. When upgrading, v
 
 | Concern | Default | Conditional alternative |
 | --- | --- | --- |
-| Interactive web | SolidStart 2 + compatible Solid 1 | Astro + compatible Solid islands for content; Solid 2 + Vite for client-only rendering when its ecosystem fits; [Marko for streaming/resumability, Leptos for Rust UI, or server templates + HTMX for HTML-driven interactions](rendering-profiles.md) |
+| Interactive web | Solid 2 (`@solidjs/vite-plugin` Start mode) or SolidStart 2 + Solid 1 | Astro + compatible Solid islands for content; [Marko for streaming/resumability, Leptos for Rust UI, or server templates + HTMX for HTML-driven interactions](rendering-profiles.md) |
 | Static content | Astro with pre-rendering | Existing suitable static pipeline |
 | JavaScript runtime | Bun tooling and regional SSR | Verified compatible Workers target; Node.js only for a verified dependency/host requirement Bun cannot satisfy |
 | Package management | Bun | pnpm when Bun is unsuitable; npm only when both are unsuitable |
 | Frontend build | Framework-supported Vite/Rolldown integration | Supported alternative for compatibility/workload needs |
-| Frontend lint/format | Oxlint + Oxfmt | Supplementary rules/tooling where required; retain a separate TypeScript check |
-| Shared styling system | StyleX with compile-time extraction | CSS Modules/native CSS when a shared atomic/token system is unnecessary |
-| Accessible UI primitives | Kobalte on Solid 1 | Ark UI or an existing design system with verified support for the selected Solid major |
+| Frontend lint/format | Oxlint (`--type-aware` where useful) + Oxfmt | Supplementary rules/tooling where required; retain a separate TypeScript check |
+| Styling | Tailwind CSS v4 (`@tailwindcss/vite`) or CSS Modules/native CSS | StyleX conditionally for strict multi-app typed token design systems |
+| Accessible UI primitives | Primitives verified for the selected Solid major (Kobalte/Ark UI on Solid 1) | Compatible Solid 2 primitives or an existing design system |
 | Local interaction state | Solid signals/stores | A measured additional state/caching requirement |
 | Browser validation | Valibot | An existing suitable schema boundary; Rust remains authoritative |
 | Backend | Rust + Axum + Tokio + Tower, with supported Hyper | Native alternative for explicit constraints or reproducible equivalent-service evidence |
-| Public API contract | OpenAPI; `utoipa` when suitable | Reviewed explicit OpenAPI; gRPC/Tonic + Protobuf for internal streaming/contracts that require it |
-| Browser API client | Generated types + openapi-fetch or an equivalent client | Existing compatible generated client |
+| Public API contract | OpenAPI; `utoipa` or `aide` when suitable | Reviewed explicit OpenAPI; gRPC/Tonic + Protobuf for internal streaming/contracts that require it |
+| Browser API client | Generated types + `openapi-fetch` or `@hey-api/openapi-ts` | Existing compatible generated client |
 | First-party UI transport | Rust API for a separate web tier | Direct Rust calls/Leptos server functions or HTML fragments in the selected rendering profile |
 | Transactional data | Patched PostgreSQL; verify support/provider compatibility for the PostgreSQL 18 baseline | Turso for embedded/tenant-owned data; specialized store for a demonstrated model |
 | PostgreSQL access | SQLx, explicit reviewed SQL, compile-time checks where macros apply | A justified abstraction with measured cost |
@@ -44,13 +44,13 @@ SolidStart 2 uses `vite.config.ts` and Vite's Environment API; do not copy v1 Vi
 
 ## Solid major and integration compatibility
 
-Solid 2 is stable and independently versioned from SolidStart. SolidStart 2.2.3 requires `solid-js@^1.9.15` and a router below 2.0. Keep Solid 1, router 1, `@solidjs/meta` 0.29 if adding it directly, and `vite-plugin-solid` 2 for that setup. Astro's `@astrojs/solid-js` 7.1.x also requires Solid 1. Check current peers before selecting or changing versions.
+Solid 2 is stable and moves SSR, server functions (`"use server"`), and app orchestration directly into `@solidjs/vite-plugin` v3+ Start mode (`solid({ start: true, ssr: true, serverFunctions: true })`). Standalone SolidStart 2.x (`2.2.3`) is in maintenance mode for `solid-js@^1.9.15` and a router below 2.0. Choose Solid 2 + `@solidjs/vite-plugin` Start mode when the project's component, router, and test dependencies support Solid 2; keep SolidStart 2 + Solid 1 (with `@solidjs/meta` 0.29 if added directly and `vite-plugin-solid` 2) when Solid 1 libraries (`@kobalte/core`, `@astrojs/solid-js` 7.1.x, `@unpic/solid`) are required. Check current peers before selecting or changing versions.
 
-For a new client-only project whose dependencies support Solid 2, use matching `solid-js` and `@solidjs/web`, plus `@solidjs/vite-plugin` and a compatible router if needed. Web imports and JSX types come from `@solidjs/web`, and stores come from `solid-js`. Check component, test, and image integrations for removed import paths as well as peer ranges. Migration also changes setter timing, effect phases, and async state, so test runtime behavior and any SSR/hydration before switching. See the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1).
+In Solid 2, web imports and JSX types come from `@solidjs/web` and stores come from `solid-js`. Check component, test, and image integrations for removed import paths as well as peer ranges. Migration changes setter timing, effect phases, and async state—and requires moving from SolidStart to `@solidjs/vite-plugin` Start mode rather than an in-place SolidStart swap—so test runtime behavior, SSR, and hydration thoroughly. See the [Solid 2 migration guide](https://docs.solidjs.com/migration/from-solid-1).
 
 ## Short request paths and rendering
 
-- Pre-render suitable public routes; use Astro islands for content interaction and SolidStart for interactive SSR/routing.
+- Pre-render suitable public routes; use Astro islands for content interaction and Solid 2 Start mode (or SolidStart 2 on Solid 1) for interactive SSR/routing.
 - Default browser API calls to Rust under the appropriate origin; keep SSR near the API. A backend-for-frontend (BFF) is justified for server-held credentials/sessions, necessary API composition, or hosting constraints. Keep domain rules and resource authorization authoritative in Rust. Verify end-user credentials or authenticated BFF identity assertions; unverified forwarded IDs/headers are not trusted identity. Account for the added latency/failure path; avoid a Bun hop with no concrete purpose.
 - Locate API/data together and define write ownership before adding regions. Edge ingress cannot remove database distance.
 - Use supported streaming/hydration; fine-grained Solid reactivity does not automatically create an islands architecture.
@@ -63,4 +63,4 @@ For a new client-only project whose dependencies support Solid 2, use matching `
 
 Use documentation matching the installed version.
 
-- [SolidStart](https://docs.solidjs.com/solid-start/v2) and [deployment plugins](https://docs.solidjs.com/solid-start/v2/guides/deployment-plugins)
+- [Solid rendering and SSR](https://docs.solidjs.com/concepts/rendering-and-ssr/), [deployment](https://docs.solidjs.com/building-apps/deployment/), [migrating from SolidStart](https://docs.solidjs.com/migration/from-solid-start/), and [SolidStart repository](https://github.com/solidjs/solid-start)

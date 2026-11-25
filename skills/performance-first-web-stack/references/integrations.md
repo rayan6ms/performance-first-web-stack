@@ -4,7 +4,7 @@ Use for OIDC/session flows, resource policy, external webhooks, payments/mail, o
 
 ## External providers
 
-Integrate required payments/mail/AI/providers behind domain interfaces with maintained Rust SDKs or verified HTTP. Verify raw-body webhook signatures, deduplicate, protect transitions from out-of-order events, and reconcile provider state. Bound time, payload, concurrency, and cost; test reversed/duplicate stateful events. Authorize AI actions independently of model output. JavaScript examples do not require a JavaScript backend.
+Integrate required payments/mail/AI/providers behind domain interfaces with maintained Rust SDKs or verified HTTP. Verify raw-body webhook signatures, deduplicate, protect transitions from out-of-order events, and reconcile provider state. Bound time, payload, concurrency, and per-tenant token/cost budgets; test reversed/duplicate stateful events. Treat retrieved RAG, MCP, and external content as untrusted data to defend against indirect prompt injection, validate model output and tool arguments with runtime schemas, and authorize AI actions independently of model output. JavaScript examples do not require a JavaScript backend.
 
 ## Authentication and session policy
 

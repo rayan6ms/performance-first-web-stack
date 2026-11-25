@@ -14,7 +14,7 @@ Use a patched, supported PostgreSQL major. PostgreSQL 18 remains the established
 - Define replica staleness, routing, and read-after-write behavior. Replication/multiple regions do not make shared writes conflict-free.
 - Configure backups/retention, WAL/PITR where applicable, RPO/RTO, and independent access. Use pgBackRest or suitable managed recovery; verify isolated restore/failover. High availability is not backup.
 
-For a SQLx 0.9 upgrade, check the Rust minimum, keep `sqlx-cli` on the same compatible line, and regenerate offline metadata against the target database. Review new SQL string requirements for dynamic queries, macro output, migrations, and TLS features. See the [SQLx changelog](https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md).
+For a SQLx 0.9 upgrade, verify the Rust 1.94.0 minimum, keep `sqlx-cli` on the same compatible line, evaluate per-crate `sqlx.toml` configuration where useful, and regenerate offline metadata against the target database. Review new SQL string requirements for dynamic queries, macro output, migrations, and TLS features. See the [SQLx changelog](https://github.com/launchbadge/sqlx/blob/main/CHANGELOG.md).
 
 ## Disposable development databases with PGBoxDB
 

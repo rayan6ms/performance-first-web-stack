@@ -8,12 +8,12 @@ A good fit for latency-sensitive APIs, high-traffic websites, and applications w
 
 | Layer | Recommendation |
 | --- | --- |
-| Web UI | [SolidStart 2 with Solid 1](https://docs.solidjs.com/solid-start/v2) for SSR |
+| Web UI | [Solid 2 (Start mode)](https://docs.solidjs.com/concepts/rendering-and-ssr/) or [SolidStart 2 with Solid 1](https://github.com/solidjs/solid-start) for SSR |
 | Backend | Rust + Axum + Tokio + Tower |
 | API contract | OpenAPI with generated clients |
 | Database | PostgreSQL + SQLx |
 | Browser validation | Valibot |
-| Styling | StyleX for a shared design system; CSS Modules or native CSS for simpler UI |
+| Styling | Tailwind CSS v4 or CSS Modules/native CSS; StyleX for shared token design systems |
 | Tooling | Bun, Vite, Oxlint, Oxfmt |
 | Hosting | Regional VMs or managed containers near the database, with CDN delivery |
 
@@ -24,7 +24,7 @@ Use Astro for content sites. Add caches, queues, and distributed services when t
 With [Bun](https://bun.com/docs/installation) and [Git](https://git-scm.com/downloads), run:
 
 ```sh
-bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.18
+bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.19
 ```
 
 <details>
@@ -33,19 +33,19 @@ bun x --bun github:rayan6ms/performance-first-web-stack#v0.1.18
 With curl and either Bun or Node.js 22+ (Linux/macOS):
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/rayan6ms/performance-first-web-stack/v0.1.18/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/rayan6ms/performance-first-web-stack/v0.1.19/install.sh | sh
 ```
 
 With Node.js 22+ and Git:
 
 ```sh
-npx --yes github:rayan6ms/performance-first-web-stack#v0.1.18
+npx --yes github:rayan6ms/performance-first-web-stack#v0.1.19
 ```
 
 With pnpm, Node.js 22+ and Git:
 
 ```sh
-pnpm dlx github:rayan6ms/performance-first-web-stack#v0.1.18
+pnpm dlx github:rayan6ms/performance-first-web-stack#v0.1.19
 ```
 
 </details>

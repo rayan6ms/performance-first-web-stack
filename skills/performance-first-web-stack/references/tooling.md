@@ -12,9 +12,9 @@ Selected Marko/Leptos/HTMX foundations also follow their [rendering profile](ren
 
 - Verify changed/selected APIs and compatibility using installed code/types or matching official docs, including adapters, StyleX compiler, Bun, Rust MSRV/features, and database/extensions. Disclose gaps rather than inventing support.
 - Prefer supported stable compatible release combinations, patched releases, and pinned local tools/toolchains. If a needed integration requires a prerelease, establish its purpose, target/version support limits, and validation/fallback before selection; pin it and record those limits. Local checks do not establish production support. Resolve incompatibility within the affected version/adapter boundary before considering a wider change. Experimental features also need a purpose, risk, and test/fallback.
-- Use Cargo/JS lockfiles and one JS package manager per workspace; locked builds require lockfiles. Preserve working tools for unrelated fixes.
+- Use Cargo/JS lockfiles and one JS package manager per workspace; locked builds require lockfiles. Under Bun, preserve default-deny lifecycle scripts (`trustedDependencies` only for reviewed packages, noting it replaces Bun's default allowlist), configure a release cooldown (`minimumReleaseAge` in `bunfig.toml`), and run `bun audit` alongside `--frozen-lockfile`. Preserve working tools for unrelated fixes.
 - Bun is the tooling default where suitable. Use it explicitly for compatible scripts; `--bun` overrides Node shebangs but does not fix incompatibility. Another runtime needs a verified unmet Bun requirement; upstream compatibility metadata alone does not justify it. pnpm manages packages, not application execution. Fetch missing tools at verified versions.
-- Use Cargo for Rust and a separate frontend TypeScript check; transpilation/Oxlint do not replace it. Do not suppress errors to pass checks.
+- Use Cargo for Rust and a separate frontend TypeScript check; transpilation and plain Oxlint do not replace it. Enable `oxlint --type-aware` with stable `oxlint-tsgolint` (or `tsrs` when compatible) for type-aware lint rules such as floating promises; `oxlint --type-aware --type-check` can surface compiler diagnostics alongside lint checks when validated. Do not suppress errors to pass checks.
 - Prefer rootless Podman, Docker when unsuitable, and `uv` for Python. Bound build resources to the host.
 
 When type checking fails in third-party declarations, first inspect compatible dependency versions and separate those diagnostics from authored errors. If needed, document `skipLibCheck` in the smallest affected configuration; it skips declaration-file checking, not checking of authored code against imported APIs. Retain strict application, configuration, and test checks and verify their coverage. Record the vendor-check limitation rather than masking authored errors or installing unused optional integrations.
@@ -40,7 +40,15 @@ For new foundations, expose one documented `verify` command covering applicable 
 - Before replacing an authoritative checker, compare file coverage, diagnostics, and failure exits with supported official TypeScript on representative valid/invalid project code, including references where used. Keep the existing check authoritative until compatibility is established. Retain framework checks such as `astro check` and selected template diagnostics. Bun check emits neither declarations nor `.tsbuildinfo`; keep required emit/code-generation and editor tooling. Recheck relevant coverage after upgrades and measure actual wait/memory.
 - Use [tsrs](https://github.com/oxc-project/tsrs) as an alternative local accelerator when its tested compatibility and measured benefit justify another tool. Check its [compatibility report](https://github.com/oxc-project/tsrs/blob/main/docs/COMPATIBILITY.md), pin it, and expose a separate script such as `types:fast` running `tsrs --noEmit -p tsconfig.json`, adapted to the actual configs. Retain the accepted project-wide type and framework checks in `verify`/CI when adding experimental tsrs feedback; do not install overlapping accelerators by default. Isolate incremental caches between compilers where needed.
 
-## Rust development acceleration: rustd
+## Rust development acceleration
+
+Prefer proven, borrow-checker-preserving accelerators first:
+
+- Use `cargo-nextest` for faster parallel, process-isolated Rust test runs locally and in CI (retaining `cargo test --doc` when doctests exist).
+- Use a fast linker (`mold` on Linux, `lld` elsewhere) and `sccache` to cut incremental rebuild and CI times without relaxing compiler checks.
+- Use `cargo-chef` in container builds to cache dependency layers separately from application code.
+
+### Experimental daemon builds: rustd
 
 - Use [rustd](https://github.com/DioxusLabs/rustd) as an experimental local accelerator for repeated Rust builds on a supported host. Before adoption or upgrades, recheck upstream status, platform support, and the exact compatible Rust toolchain/`rust-src`; pin the tested combination. Keep its binaries together and prefer explicit `cargo rustd build` / `cargo rustd run` commands over enabling a user-wide Cargo wrapper.
 - The current upstream instructions require Rust 1.99.0 with `rust-src`. Daemon builds still lack a borrow checker. Run a rustc-backed check before executing changed daemon-built code. Keep Cargo/rustc checks, Clippy, tests, and release builds authoritative. On POSIX hosts, `RUSTC_WORKSPACE_WRAPPER= cargo check --workspace --all-targets` clears the workspace wrapper. Keep verification artifacts separate from daemon-patched executables where needed.
@@ -53,7 +61,7 @@ CONDITIONAL: use `Bun.S3Client` for S3/R2/presigning, `Bun.SQL` for PostgreSQL/M
 
 ## Platform workflow tools
 
-Use Just/direnv, SOPS with age, GitHub Actions, Renovate, Release Please, Trivy, `cargo-audit`, and `cargo-deny` for required workflows. Nix, Bazel, and JS orchestrators need distinct roles; scans/infrastructure policy must match deployment.
+Use Just/direnv, SOPS with age, GitHub Actions, Renovate, Release Please, Trivy, `cargo-audit`, `cargo-deny`, `cargo-nextest`, `sccache`, and `cargo-chef` for required workflows. Nix, Bazel, and JS orchestrators need distinct roles; scans/infrastructure policy must match deployment.
 
 ## Official documentation
 

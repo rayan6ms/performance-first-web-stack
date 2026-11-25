@@ -26,11 +26,11 @@ Prefer the smallest justified improvement and retain compatible defaults when ga
 
 ## Default foundation
 
-- Use SolidStart 2 with compatible Solid 1 packages for interactive SSR, and Astro pre-rendering with minimal islands for content. Evaluate Solid 2 + Vite for client-only work using the architecture reference. Use the supported Vite/Rolldown integration, Oxlint + Oxfmt, and separate TypeScript checks.
+- Use Solid 2 (`@solidjs/vite-plugin` Start mode) when dependencies support Solid 2, or SolidStart 2 + Solid 1 when Solid 1 ecosystem packages are required; use Astro pre-rendering with minimal islands for content. Use the supported Vite/Rolldown integration, Oxlint (`--type-aware` where useful) + Oxfmt, and separate TypeScript checks.
 - Prefer Bun tooling/regional SSR; use pnpm when Bun is unsuitable and npm only when both are unsuitable. Workers needs a verified compatible target; Node needs a verified requirement Bun cannot satisfy. Prefer rootless Podman, Docker when unsuitable, and `uv` for Python.
 - Rust + Axum/Tokio/Tower owns authoritative backend/domain/resource authorization. Browser API calls default to Rust; a Bun BFF needs a concrete session/composition/hosting purpose and verified identity assertions. Use OpenAPI/generated clients for Rust-to-TypeScript and public/polyglot APIs; same-process Rust calls need no HTTP hop. JavaScript RPC inference does not cross Rust.
 - Use patched PostgreSQL + SQLx and reviewed SQL for relational state; Turso profiles need their selected SDK/ownership model. Start with safe HTTP/CDN caching; add Valkey or NATS JetStream for required capabilities and R2/S3-compatible storage for files.
-- In Solid UI, use StyleX for a useful shared token system, otherwise CSS Modules/native CSS. Use primitives compatible with the selected Solid major, signals/stores, and Valibot for browser validation. Rust still validates server-bound requests. Static/local-only interaction needs no backend.
+- In Solid UI, start with Tailwind CSS v4 (`@tailwindcss/vite`) or CSS Modules/native CSS; use StyleX conditionally for strict multi-app token design systems. Use primitives compatible with the selected Solid major, signals/stores, and Valibot for browser validation. Rust still validates server-bound requests. Static/local-only interaction needs no backend.
 - Prefer regional VMs/managed containers near state, useful CDN/WAF, and compatible OpenTelemetry. Additional regions/services need ownership, capacity, availability, or organizational reasons. Effect belongs only in justified substantial Bun coordination; keep domain ownership in Rust.
 
 Label unmeasured assumptions. One authoritative contract/transaction model governs each boundary; additional services need a concrete requirement.
